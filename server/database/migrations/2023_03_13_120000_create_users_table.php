@@ -23,6 +23,7 @@ return new class extends Migration
             $table->index('role_id', 'user_role_idx');
             $table->foreign('role_id', 'user_role_fk')->on('roles')->references('id');
 
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

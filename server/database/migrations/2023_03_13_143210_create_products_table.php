@@ -24,6 +24,7 @@ return new class extends Migration
             $table->index('category_id', 'product_category_idx');
             $table->foreign('category_id', 'product_category_fk')->on('categories')->references('id');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
