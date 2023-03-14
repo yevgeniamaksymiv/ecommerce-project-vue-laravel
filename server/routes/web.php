@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\DeliveryController;
+use App\Http\Controllers\admin\OrderController;
+use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\RoleController;
+use App\Http\Controllers\admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +19,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts/sidebar');
 });
+
+Route::resources([
+    'categories' => CategoryController::class,
+    'deliveries' => DeliveryController::class,
+    'orders' => OrderController::class,
+    'products' => ProductController::class,
+    'roles' => RoleController::class,
+    'users' => UserController::class
+]);
+
+
+
+
+

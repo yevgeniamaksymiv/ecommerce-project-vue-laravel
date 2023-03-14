@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('surname');
+            $table->string('surname')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('role_id');
+            $table->unsignedBigInteger('role_id')->nullable();
             $table->index('role_id', 'user_role_idx');
             $table->foreign('role_id', 'user_role_fk')->on('roles')->references('id');
 
