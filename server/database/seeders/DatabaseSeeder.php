@@ -13,44 +13,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $permissions = [
-            ['name' => 'role.create'],
-            ['name' => 'role.access'],
-            ['name' => 'role.update'],
-            ['name' => 'role.delete'],
-            ['name' => 'user.create'],
-            ['name' => 'user.access'],
-            ['name' => 'user.update'],
-            ['name' => 'user.delete'],
-            ['name' => 'delivery.create'],
-            ['name' => 'delivery.access'],
-            ['name' => 'delivery.update'],
-            ['name' => 'delivery.delete'],
-            ['name' => 'order.create'],
-            ['name' => 'order.access'],
-            ['name' => 'order.update'],
-            ['name' => 'order.delete'],
-            ['name' => 'category.create'],
-            ['name' => 'category.access'],
-            ['name' => 'category.update'],
-            ['name' => 'category.delete'],
-            ['name' => 'product.create'],
-            ['name' => 'product.access'],
-            ['name' => 'product.update'],
-            ['name' => 'product.delete'],
-        ];
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            CategorySeeder::class,
+            DeliverySeeder::class,
+            OrderSeeder::class,
+            ProductSeeder::class,
+            UserSeeder::class
+        ]);
 
-        foreach ($permissions as $permission) {
-            DB::table('permissions')->insert($permission);
-        }
 
-//        DB::table('roles')->insert(['name' => 'admin']);
-//        DB::table('users')->insert([
-//            'name' => 'Admin',
-//            'email' => 'admin@gmail.com',
-//            'password' => 'admin123',
-//            'role_id' => 1
-//        ]);
 
 
         // \App\Models\User::factory(10)->create();

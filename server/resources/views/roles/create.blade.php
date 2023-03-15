@@ -3,7 +3,7 @@
 @section('content')
     <div class="bg-white p-4 rounded">
         <div class="lead">
-            Add new role and assign permissions.
+            Add new role and assign permissions
         </div>
 
         <div class="container mt-4">
@@ -25,7 +25,7 @@
                     <label for="name" class="form-label">Name</label>
                     <input value="{{ old('name') }}"
                            type="text"
-                           class="form-control"
+                           class="form-control shadow-none"
                            name="name"
                            placeholder="Name" required>
                 </div>
@@ -36,24 +36,23 @@
                     <thead>
                     <th scope="col" width="1%"><input type="checkbox" name="all_permission"></th>
                     <th scope="col" width="20%">Name</th>
-                    <th scope="col" width="1%">Guard</th>
                     </thead>
 
-{{--                    @foreach($permissions as $permission)--}}
-{{--                        <tr>--}}
-{{--                            <td>--}}
-{{--                                <input type="checkbox"--}}
-{{--                                       name="permission[{{ $permission->name }}]"--}}
-{{--                                       value="{{ $permission->name }}"--}}
-{{--                                       class='permission'>--}}
-{{--                            </td>--}}
-{{--                            <td>{{ $permission->name }}</td>--}}
-{{--                            <td>{{ $permission->guard_name }}</td>--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
+                    @foreach($permissions as $permission)
+                        <tr>
+                            <td>
+                                <input type="checkbox"
+                                       name="permission[{{ $permission->name }}]"
+                                       value="{{ $permission->name }}"
+                                       class='permission'>
+                            </td>
+                            <td>{{ $permission->description }}</td>
+                        </tr>
+                    @endforeach
+
                 </table>
 
-                <button type="submit" class="btn btn-primary">Save user</button>
+                <button type="submit" class="btn btn-outline-primary">Save role</button>
                 <a href="{{ route('roles.index') }}" class="btn btn-default">Back</a>
             </form>
         </div>
@@ -62,21 +61,4 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('[name="all_permission"]').on('click', function() {
-
-                if($(this).is(':checked')) {
-                    $.each($('.permission'), function() {
-                        $(this).prop('checked',true);
-                    });
-                } else {
-                    $.each($('.permission'), function() {
-                        $(this).prop('checked',false);
-                    });
-                }
-
-            });
-        });
-    </script>
 @endsection
