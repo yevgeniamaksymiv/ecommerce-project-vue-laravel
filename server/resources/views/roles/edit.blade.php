@@ -9,7 +9,7 @@
         <div class="container mt-4">
 
             <form method="POST" action="{{ route('roles.update', $role->id) }}">
-                @method('PUT')
+                @method('PATCH')
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
@@ -33,9 +33,10 @@
                         <tr>
                             <td>
                                 <input type="checkbox"
-                                       name="permission[{{ $permission->name }}]"
-                                       value="{{ $permission->name }}"
-                                       class='permission'>
+                                       name="permissions[{{ $permission->id }}]"
+                                       value="{{ $permission->id }}"
+                                       class="permission"
+                                    {{ (in_array($permission->id, $checkedPermissions) ? 'checked' : '')}}>
                             </td>
                             <td>{{ $permission->description }}</td>
                         </tr>

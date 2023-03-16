@@ -7,6 +7,7 @@ use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Permission;
 use App\Models\Role;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -62,7 +63,11 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $permissions = Permission::all();
-        return view('roles.edit', compact(['role', 'permissions']));
+        $checkedPermissions = DB::table('permission_role')
+            ->where('role_id', $role->id)
+            ->pluck('permission_id')->toArray();
+
+        return view('roles.edit', compact(['role', 'permissions', 'checkedPermissions']));
     }
 
     /**
@@ -71,6 +76,13 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role)
     {
         $data = $request->validated();
+
+        $permissions = collect($request->input('permissions', []))
+            ->map(function ($permission) {
+                return ['permission_id' => $permission];
+            });
+        $role->permissions()->sync($permissions);
+
         $role->update($data);
         session(['message' => 'Role updated successfully']);
         return redirect()->route('roles.index');
