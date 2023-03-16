@@ -2,6 +2,20 @@
 
 @section('content')
     <div class="bg-white p-4 rounded">
+        @if(session('message'))
+            <div class="alert alert-success">{{ session('message') }}</div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="list-unstyled">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="lead">
             All roles
         </div>
@@ -23,7 +37,7 @@
                     <tr>
                         <td>{{ $role->name }}</td>
                         <td>
-                            <a href="{{ route('roles.create', $role->id) }}" class="btn btn-default shadow-none">
+                            <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-default shadow-none">
                                 <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
                             </a>
                         </td>

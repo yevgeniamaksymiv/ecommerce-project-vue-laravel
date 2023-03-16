@@ -1,5 +1,52 @@
 @extends('layouts.sidebar')
 
 @section('content')
-Edit
+    <div class="bg-white p-4 rounded">
+        <div class="lead">
+            Edit role
+        </div>
+
+        <div class="container mt-4">
+
+            <form method="POST" action="{{ route('roles.update', $role->id) }}">
+                @method('PUT')
+                @csrf
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input value="{{ $role->name }}"
+                           type="text"
+                           class="form-control shadow-none @error('name') is-invalid @enderror"
+                           name="name"
+                           placeholder="Name" required>
+                </div>
+                @error('name')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
+                <table class="table table-striped">
+                    <thead>
+                    <th scope="col" width="1%"><input type="checkbox" name="all_permission"></th>
+                    <th scope="col" width="20%">Name</th>
+                    </thead>
+
+                    @foreach($permissions as $permission)
+                        <tr>
+                            <td>
+                                <input type="checkbox"
+                                       name="permission[{{ $permission->name }}]"
+                                       value="{{ $permission->name }}"
+                                       class='permission'>
+                            </td>
+                            <td>{{ $permission->description }}</td>
+                        </tr>
+                    @endforeach
+
+                </table>
+
+                <button type="submit" class="btn btn-outline-primary shadow-none">Update role</button>
+                <a href="{{ route('roles.index') }}" class="btn btn-outline-secondary shadow-none">Back</a>
+            </form>
+        </div>
+
+    </div>
 @endsection

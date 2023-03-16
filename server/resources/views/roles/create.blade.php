@@ -8,17 +8,6 @@
 
         <div class="container mt-4">
 
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    There were some problems with your input.<br><br>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form method="POST" action="{{ route('roles.store') }}">
                 @csrf
                 <div class="mb-3">
@@ -42,8 +31,8 @@
                         <tr>
                             <td>
                                 <input type="checkbox"
-                                       name="permission[{{ $permission->name }}]"
-                                       value="{{ $permission->name }}"
+                                       name="permissions[{{ $permission->id}}]"
+                                       value="{{ $permission->id }}"
                                        class='permission'>
                             </td>
                             <td>{{ $permission->description }}</td>
@@ -53,7 +42,7 @@
                 </table>
 
                 <button type="submit" class="btn btn-outline-primary">Save role</button>
-                <a href="{{ route('roles.index') }}" class="btn btn-default">Back</a>
+                <a href="{{ route('roles.index') }}" class="btn btn-outline-secondary">Back</a>
             </form>
         </div>
 

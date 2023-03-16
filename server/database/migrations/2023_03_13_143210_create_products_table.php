@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('price');
-            $table->integer('quantity');
+            $table->integer('quantity')->nullable();
             $table->integer('size');
-            $table->string('color');
+            $table->string('color')->nullable();
             $table->string('img_path')->nullable();
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->index('category_id', 'product_category_idx');
             $table->foreign('category_id', 'product_category_fk')->on('categories')->references('id');
 
