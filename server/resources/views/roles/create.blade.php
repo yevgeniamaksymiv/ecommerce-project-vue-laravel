@@ -19,11 +19,15 @@
                            placeholder="Name" required>
                 </div>
 
+                @error('name')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
                 <label for="permissions" class="form-label">Assign Permissions</label>
 
                 <table class="table table-striped">
                     <thead>
-                    <th scope="col" width="1%"><input type="checkbox" name="all_permission"></th>
+                    <th scope="col" width="1%"><input type="checkbox" id="checkAll" name="all_permissions"></th>
                     <th scope="col" width="20%">Name</th>
                     </thead>
 
@@ -41,8 +45,8 @@
 
                 </table>
 
-                <button type="submit" class="btn btn-outline-primary">Save role</button>
-                <a href="{{ route('roles.index') }}" class="btn btn-outline-secondary">Back</a>
+                <button type="submit" class="btn btn-outline-primary shadow-none">Save role</button>
+                <a href="{{ route('roles.index') }}" class="btn btn-outline-secondary shadow-none">Back</a>
             </form>
         </div>
 
@@ -50,4 +54,31 @@
 @endsection
 
 @section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('[name="all_permissions"]').on('click', function() {
+
+                if($(this).is(':checked')) {
+                    $.each($('.permission'), function() {
+                        $(this).prop('checked',true);
+                    });
+                } else {
+                    $.each($('.permission'), function() {
+                        $(this).prop('checked',false);
+                    });
+                }
+
+            });
+        });
+    </script>
+{{--    <script type="text/javascript">--}}
+{{--        const checkAll = document.getElementById('checkAll');--}}
+{{--        const checkboxes = document.querySelectorAll('input.permission');--}}
+{{--        checkAll.onclick = (e) => {--}}
+{{--            console.log(e);--}}
+{{--            if(e.target.checked){--}}
+{{--               checkboxes.forEach(el => el.checked)--}}
+{{--            }--}}
+{{--        }--}}
+{{--    </script>--}}
 @endsection
