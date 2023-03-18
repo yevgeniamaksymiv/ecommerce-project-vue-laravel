@@ -53,32 +53,17 @@
     </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('[name="all_permissions"]').on('click', function() {
+        const checkAll = document.getElementById('checkAll');
+        const checkboxes = document.querySelectorAll('input.permission');
 
-                if($(this).is(':checked')) {
-                    $.each($('.permission'), function() {
-                        $(this).prop('checked',true);
-                    });
-                } else {
-                    $.each($('.permission'), function() {
-                        $(this).prop('checked',false);
-                    });
-                }
-
-            });
-        });
+        checkAll.onclick = (e) => {
+            if (e.target.checked) {
+               checkboxes.forEach(el => el.checked = true);
+            } else {
+                checkboxes.forEach(el => el.checked = false);
+            }
+        }
     </script>
-{{--    <script type="text/javascript">--}}
-{{--        const checkAll = document.getElementById('checkAll');--}}
-{{--        const checkboxes = document.querySelectorAll('input.permission');--}}
-{{--        checkAll.onclick = (e) => {--}}
-{{--            console.log(e);--}}
-{{--            if(e.target.checked){--}}
-{{--               checkboxes.forEach(el => el.checked)--}}
-{{--            }--}}
-{{--        }--}}
-{{--    </script>--}}
-@endsection
+@endpush
