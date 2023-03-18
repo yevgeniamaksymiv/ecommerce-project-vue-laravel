@@ -14,7 +14,7 @@
                     <label for="name" class="form-label">Name</label>
                     <input value="{{ old('name') }}"
                            type="text"
-                           class="form-control shadow-none"
+                           class="form-control shadow-none @error('name') is-invalid @enderror"
                            name="name"
                            placeholder="Name" required>
                 </div>
@@ -27,7 +27,7 @@
                     <label for="surname" class="form-label">Surname</label>
                     <input value="{{ old('surname') }}"
                            type="text"
-                           class="form-control shadow-none"
+                           class="form-control shadow-none @error('surname') is-invalid @enderror"
                            name="surname"
                            placeholder="Surname" required>
                 </div>
@@ -40,7 +40,7 @@
                     <label for="email" class="form-label">Email</label>
                     <input value="{{ old('email') }}"
                            type="email"
-                           class="form-control shadow-none"
+                           class="form-control shadow-none @error('email') is-invalid @enderror"
                            name="email"
                            placeholder="Email" required>
                 </div>
@@ -51,9 +51,9 @@
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input value="{{ old('password') }}"
+                    <input value=""
                            type="password"
-                           class="form-control shadow-none"
+                           class="form-control shadow-none @error('password') is-invalid @enderror"
                            name="password"
                            placeholder="Password" required>
                 </div>
@@ -64,7 +64,8 @@
 
                 <div class="mb-3">
                     <label for="roles" class="form-label">Assign role</label>
-                    <select class="form-select shadow-none" name="role_id" id="inputGroupSelect01">
+                    <select class="form-select shadow-none @error('role_id') is-invalid @enderror" name="role_id"
+                            id="inputGroupSelect01">
                         <option selected>Select role</option>
                         @foreach($roles as $role)
                             <option
@@ -72,6 +73,10 @@
                         @endforeach
                     </select>
                 </div>
+
+                @error('role_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
 
                 <button type="submit" class="btn btn-outline-primary shadow-none">Save user</button>
                 <a href="{{ route('users.index') }}" class="btn btn-outline-secondary shadow-none">Back</a>

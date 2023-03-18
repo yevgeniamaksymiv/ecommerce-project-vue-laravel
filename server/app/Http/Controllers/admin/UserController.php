@@ -43,7 +43,7 @@ class UserController extends Controller
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
             'role_id' => $request->get('role_id'),
-            ]);
+        ]);
 
         session(['message' => 'User created successfully']);
 
@@ -64,9 +64,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        $userRole = DB::table('roles')->where('id', $user->role_id)
-            ->pluck('name')->implode('name');
-        return view('users.edit', compact('user', 'roles', 'userRole'));
+
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**

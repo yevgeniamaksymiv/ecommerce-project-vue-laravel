@@ -9,11 +9,11 @@
         <div class="container mt-4">
 
             <form method="POST" action="{{ route('users.update', $user->id) }}">
-                @method('PATCH')
+                @method('PUT')
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input value="{{ $user->name }}"
+                    <input value="{{ old('name', $user->name) }}"
                            type="text"
                            class="form-control shadow-none @error('name') is-invalid @enderror"
                            name="name"
@@ -26,7 +26,7 @@
 
                 <div class="mb-3">
                     <label for="surname" class="form-label">Surname</label>
-                    <input value="{{ $user->surname }}"
+                    <input value="{{ old('surname', $user->surname) }}"
                            type="text"
                            class="form-control shadow-none @error('surname') is-invalid @enderror"
                            name="surname"
@@ -39,7 +39,7 @@
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input value="{{ $user->email }}"
+                    <input value="{{ old('email', $user->email) }}"
                            type="email"
                            class="form-control shadow-none @error('email') is-invalid @enderror"
                            name="email"
@@ -52,7 +52,7 @@
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input value="{{ old('password') }}"
+                    <input value=""
                            type="password"
                            class="form-control shadow-none @error('password') is-invalid @enderror"
                            name="password"
@@ -65,14 +65,19 @@
 
                 <div class="mb-3">
                     <label for="roles" class="form-label">Assign role</label>
-                    <select class="form-select shadow-none" name="role_id" id="inputGroupSelect01">
-                        <option selected>{{ $userRole }}</option>
+                    <select class="form-select shadow-none @error('role_id') is-invalid @enderror" name="role_id"
+                            id="inputGroupSelect01">
+                        <option selected>Select role</option>
                         @foreach($roles as $role)
                             <option
-                                value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : ''}}>{{ $role->name }}</option>
+                                value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : ''}}>{{ $role->name }}</option>
                         @endforeach
                     </select>
                 </div>
+
+                @error('role_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
 
                 <button type="submit" class="btn btn-outline-primary shadow-none">Update user</button>
                 <a href="{{ route('users.index') }}" class="btn btn-outline-secondary shadow-none">Back</a>

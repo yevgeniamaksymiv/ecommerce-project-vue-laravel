@@ -9,11 +9,11 @@
         <div class="container mt-4">
 
             <form method="POST" action="{{ route('roles.update', $role->id) }}">
-                @method('PATCH')
+                @method('PUT')
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input value="{{ $role->name }}"
+                    <input value="{{ old('name', $role->name) }}"
                            type="text"
                            class="form-control shadow-none @error('name') is-invalid @enderror"
                            name="name"

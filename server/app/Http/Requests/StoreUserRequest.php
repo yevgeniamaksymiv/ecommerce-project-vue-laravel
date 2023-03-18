@@ -40,6 +40,7 @@ class StoreUserRequest extends FormRequest
             'email.required' => 'Field email is required',
             'email.unique' => 'This email already exists',
             'password.required' => 'Field password is required',
+            'role_id.*' => 'Select user role',
         ];
     }
 }

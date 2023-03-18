@@ -21,10 +21,11 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = $this->route('user')->id;
         return [
             'name' => 'sometimes|required|string|min:3|max:100',
             'surname' => 'sometimes|required|string|min:3|max:100',
-            'email' => 'sometimes|required|string|email:rfc,dns|unique:users,email,'.$this->id,
+            'email' => 'sometimes|required|string|email:rfc,dns|unique:users,email,'.$userId,
             'password' => 'sometimes|required|min:8',
             'role_id' => 'required|integer|exists:App\Models\Role,id',
         ];
@@ -40,6 +41,8 @@ class UpdateUserRequest extends FormRequest
             'email.required' => 'Field email is required',
             'email.unique' => 'This email already exists',
             'password.required' => 'Field password is required',
+            'role_id.*' => 'Select user role',
         ];
     }
+
 }

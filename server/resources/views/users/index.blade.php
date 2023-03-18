@@ -41,10 +41,11 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->surname }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>{{
+    \Illuminate\Support\Facades\DB::table('roles')->where('id', $user->role_id)
+            ->pluck('name')->implode('name')
+    }}</td>
 
-{{--                            <td>{{foreach($roles as $role){--}}
-{{--    return $role->id === $user->role_id ? $role->name : null;--}}
-{{--}}}</td>--}}
 
                         <td>
                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-default shadow-none">
