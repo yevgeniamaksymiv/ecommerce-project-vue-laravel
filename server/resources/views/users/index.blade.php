@@ -22,7 +22,7 @@
 
         <div class="container mt-4">
 
-            <table class="table">
+            <table class="table table-striped">
                 <thead>
                 <th scope="col" width="20%">Name</th>
                 <th scope="col" width="20%">Surname</th>
@@ -42,7 +42,7 @@
                         <td>{{ $user->surname }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{
-    \Illuminate\Support\Facades\DB::table('roles')->where('id', $user->role_id)
+    $roles->where('id', $user->role_id)
             ->pluck('name')->implode('name')
     }}</td>
 
