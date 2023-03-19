@@ -49,13 +49,22 @@
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                <label for="password" class="form-label">Password</label>
+                <div class="mb-3 input-group">
                     <input value=""
                            type="password"
                            class="form-control shadow-none @error('password') is-invalid @enderror"
                            name="password"
-                           placeholder="Password" required>
+                           placeholder="Password" required
+                           id="password">
+                    <span class="input-group-text">
+                        <img width="20"
+                             height="20"
+                             src="{{ asset('assets/visibility.svg') }}"
+                             alt="visibility svg"
+                             id="visibility-btn"
+                             role="button">
+                    </span>
                 </div>
 
                 @error('password')
@@ -85,3 +94,21 @@
 
     </div>
 @endsection
+
+@push('scripts')
+    <script type="text/javascript">
+        const visibilityBtn = document.getElementById('visibility-btn');
+        const password = document.getElementById('password');
+
+        visibilityBtn.onclick = (e) => {
+            e.preventDefault();
+            if(password.type === "password") {
+                password.setAttribute("type", "text");
+                visibilityBtn.src = "{{ asset('assets/visibility_off.svg') }}";
+            } else {
+                password.setAttribute("type", "password");
+                visibilityBtn.src = "{{ asset('assets/visibility.svg') }}";
+            }
+        }
+    </script>
+@endpush
