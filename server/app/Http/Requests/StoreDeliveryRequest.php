@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategoryRequest extends FormRequest
+class StoreDeliveryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,7 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:3|max:255',
-            'parent_id' => 'nullable|integer'
+            'name' => 'required|string|min:3|max:100',
         ];
     }
 
@@ -31,8 +30,8 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'Field name is required',
-            'name.min' => 'Minimum length of name is 3 characters ',
-            'name.max' => 'Maximum length of name is 100 characters ',
+            'name.min' => 'Minimum length of name 3 characters ',
+            'name.max' => 'Maximum length of name 100 characters ',
         ];
     }
 }

@@ -19,13 +19,12 @@
         <span class="text-center fs-4">Admin Dashboard</span>
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
-
-                <li class="nav-item"><a class="nav-link" href="{{ route('roles.index') }}">Roles</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('categories.index') }}">Categories</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Deliveries</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('roles.index') }}">Roles</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('categories.index') }}">Categories</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('deliveries.index') }}">Deliveries</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
         </ul>
     </div>
 
@@ -33,6 +32,8 @@
         @yield('content')
     </section>
 </div>
+
 @stack('scripts')
+
 </body>
 </html>

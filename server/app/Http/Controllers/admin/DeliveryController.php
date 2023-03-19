@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreDeliveryRequest;
+use App\Http\Requests\UpdateDeliveryRequest;
 use App\Models\Delivery;
 use Illuminate\Http\Request;
 
@@ -13,7 +15,8 @@ class DeliveryController extends Controller
      */
     public function index()
     {
-        //
+        $deliveries = Delivery::all();
+        return view('deliveries.index', compact('deliveries'));
     }
 
     /**
@@ -21,15 +24,20 @@ class DeliveryController extends Controller
      */
     public function create()
     {
-        //
+        return view('deliveries.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreDeliveryRequest $request)
     {
-        //
+        $data = $request->validated();
+        Delivery::create($data);
+
+        session(['message' => 'Delivery created successfully']);
+
+        return redirect()->route('deliveries.index');
     }
 
     /**
@@ -45,15 +53,20 @@ class DeliveryController extends Controller
      */
     public function edit(Delivery $delivery)
     {
-        //
+        return view('deliveries.edit', compact('delivery'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Delivery $delivery)
+    public function update(UpdateDeliveryRequest $request, Delivery $delivery)
     {
-        //
+        $data = $request->validated();
+        $delivery->update($data);
+
+        session(['message' => 'Delivery updated successfully']);
+
+        return redirect()->route('deliveries.index');
     }
 
     /**
@@ -61,6 +74,8 @@ class DeliveryController extends Controller
      */
     public function destroy(Delivery $delivery)
     {
-        //
+        $delivery->delete();
+        session(['message' => 'Delivery deleted successfully']);
+        return redirect()->route('deliveries.index');
     }
 }

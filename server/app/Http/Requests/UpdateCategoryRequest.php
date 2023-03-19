@@ -31,6 +31,8 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'Field name is required',
+            'name.min' => 'Minimum length of name is 3 characters ',
+            'name.max' => 'Maximum length of name is 100 characters ',
         ];
     }
 }
