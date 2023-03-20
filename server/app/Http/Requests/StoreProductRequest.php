@@ -28,7 +28,7 @@ class StoreProductRequest extends FormRequest
             'quantity' => 'nullable|integer',
             'size' => 'sometimes|required|integer',
             'color' => 'nullable|string',
-            'img_path' => 'nullable|string',
+            'img_path' => 'nullable|image',
             'category_id' => 'nullable|integer|exists:App\Models\Category,id',
         ];
     }
@@ -42,7 +42,7 @@ class StoreProductRequest extends FormRequest
             'quantity.*' => 'Field quantity must be an integer',
             'size.*' => 'Field size is required and must be an integer',
             'color.*' => 'Field color must be a string',
-            'img_path.*' => 'Field image must be a string',
+            'img_path.*' => 'Image must be a file jpeg, png, jpg, gif, svg',
             'category_id.*' => 'Field category must be an integer',
         ];
     }
