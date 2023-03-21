@@ -36,14 +36,14 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->except('_token');
 
         if ($request->hasFile('img_path')) {
-            $destination_path = 'public/images/products';
+            $destination_path = 'images/products/';
             $image = $request->file('img_path');
             $image_name = time()."_".$image->getClientOriginalName();
-            $request->file('img_path')->storeAs($destination_path, $image_name);
-            $data['img_path'] = $image_name;
+            $request->file('img_path')->storeAs($destination_path, $image_name, 'public');
+            $data['img_path'] = $destination_path.$image_name;
         }
         Product::create($data);
 
@@ -74,15 +74,15 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $data = $request->validated();
+        $data = $request->except('_token');
 
         if ($request->hasFile('img_path')) {
-            Storage::delete('public/images/products/'.$product->img_path);
-            $destination_path = 'public/images/products';
+            Storage::disk('public')->delete($product->img_path);
+            $destination_path = 'images/products/';
             $image = $request->file('img_path');
             $image_name = time()."_".$image->getClientOriginalName();
-            $request->file('img_path')->storeAs($destination_path, $image_name);
-            $data['img_path'] = $image_name;
+            $request->file('img_path')->storeAs($destination_path , $image_name, 'public');
+            $data['img_path'] = $destination_path.$image_name;
         }
         $product->update($data);
 
@@ -95,7 +95,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        Storage::delete('public/images/products/'.$product->img_path);
+        Storage::disk('public')->delete($product->img_path);
         $product->delete();
 
         session(['message' => 'Product deleted successfully']);

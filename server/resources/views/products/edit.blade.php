@@ -92,8 +92,7 @@
 
                 <label for="img_path" class="form-label">Image</label>
                 <div class="mb-3 input-group">
-                    <input value="{{ old('img_path', $product->img_path) }}"
-                           type="file"
+                    <input type="file"
                            class="form-control shadow-none @error('img_path') is-invalid @enderror"
                            name="img_path"
                            placeholder="Image" required>

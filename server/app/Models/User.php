@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,11 +14,25 @@ class User extends Authenticatable
     protected $table = 'users';
     protected $guarded = false;
 
-    public function role() {
+    public function role()
+    {
         return $this->belongsTo(Role::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->surname . ' ' . $this->name
+        );
+    }
+
     use HasApiTokens, HasFactory, Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *

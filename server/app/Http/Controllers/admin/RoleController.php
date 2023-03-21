@@ -36,8 +36,6 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        $request->validated();
-
         $role = Role::create(['name' => $request->get('name')]);
         $permissions = collect($request->input('permissions', []))
             ->map(function ($permission) {
@@ -75,7 +73,7 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        $data = $request->validated();
+        $data = $request->except('_token');
 
         $permissions = collect($request->input('permissions', []))
             ->map(function ($permission) {

@@ -32,7 +32,7 @@ class DeliveryController extends Controller
      */
     public function store(StoreDeliveryRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->except('_token');
         Delivery::create($data);
 
         session(['message' => 'Delivery created successfully']);
@@ -61,7 +61,7 @@ class DeliveryController extends Controller
      */
     public function update(UpdateDeliveryRequest $request, Delivery $delivery)
     {
-        $data = $request->validated();
+        $data = $request->except('_token');
         $delivery->update($data);
 
         session(['message' => 'Delivery updated successfully']);

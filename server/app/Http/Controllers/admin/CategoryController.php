@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -33,7 +32,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->except('_token');
         Category::create($data);
 
         session(['message' => 'Category created successfully']);
@@ -63,7 +62,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $data = $request->validated();
+        $data = $request->except('_token');
         $category->update($data);
 
         session(['message' => 'Category updated successfully']);

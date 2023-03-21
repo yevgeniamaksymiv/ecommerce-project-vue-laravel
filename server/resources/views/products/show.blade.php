@@ -3,10 +3,9 @@
 @section('content')
 
     <div class="bg-white p-4 rounded">
-        <div class="container text-center mt-4">
-            <div class="card" style="width: 18rem;">
-{{--                <img width="286" src="{{ asset('storage/images/products/'.$product->img_path) }}" class="card-img-top" alt="mens clothes">--}}
-                <img width="286" src="{{ \Illuminate\Support\Facades\Storage::url('public/images/products/'.$product->img_path) }}" class="card-img-top" alt="mens clothes">
+        <div class="container text-center">
+            <div class="card" style="width: 25rem;">
+                <img width="398" height="265" src="{{ url('storage/'.$product->img_path) }}" class="card-img-top" alt="mens clothes">
                 <div class="card-body">
                     <h5 class="card-title">{{ $product->name }}</h5>
                     <p class="card-text">{{ $product->description }}</p>
