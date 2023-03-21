@@ -14,8 +14,7 @@
                     <li class="list-group-item">Price: {{ $product->price }} UAH</li>
                     <li class="list-group-item">Size: {{ $product->size }}</li>
                     <li class="list-group-item">Quantity: {{ $product->quantity }}</li>
-                    <li class="list-group-item">Category: {{ $categories->where('id', $product->category_id)
-                                    ->pluck('name')->implode('name') }}</li>
+                    <li class="list-group-item">Category: {{ $product->category->name ?? '' }}</li>
                 </ul>
                 <div class="card-body">
                     <a href="{{ route('products.index') }}" class="btn btn-outline-secondary shadow-none">Back</a>

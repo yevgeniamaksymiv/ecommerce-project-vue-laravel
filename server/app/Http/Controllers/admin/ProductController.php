@@ -17,8 +17,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all()->sortByDesc('created_at');
-        $categories = Category::all()->where('parent_id', !null);
+//        $products = Product::all()->sortByDesc('created_at');
+        $products = Product::query()->orderBy('created_at', 'desc')->get();
+        $categories = Category::query()->where('parent_id', !null)->get();
         return view('products.index', compact('products', 'categories'));
     }
 
@@ -27,7 +28,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all()->where('parent_id', !null);
+        $categories = Category::query()->where('parent_id', !null)->get();
         return view('products.create', compact('categories'));
     }
 
@@ -56,7 +57,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $categories = Category::all()->where('parent_id', !null);
+        $categories = Category::query()->where('parent_id', !null)->get();
         return view('products.show', compact('product', 'categories'));
     }
 
@@ -65,7 +66,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $categories = Category::all()->where('parent_id', !null);
+        $categories = Category::query()->where('parent_id', !null)->get();
         return view('products.edit', compact('product', 'categories'));
     }
 
@@ -77,7 +78,11 @@ class ProductController extends Controller
         $data = $request->except('_token');
 
         if ($request->hasFile('img_path')) {
-            Storage::disk('public')->delete($product->img_path);
+
+            if ($product->img_path && Storage::disk('public')->exists($product->img_path)) {
+                Storage::disk('public')->delete($product->img_path);
+            }
+
             $destination_path = 'images/products/';
             $image = $request->file('img_path');
             $image_name = time()."_".$image->getClientOriginalName();
@@ -95,7 +100,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        Storage::disk('public')->delete($product->img_path);
+        if ($product->img_path && Storage::disk('public')->exists($product->img_path)) {
+            Storage::disk('public')->delete($product->img_path);
+        }
+
         $product->delete();
 
         session(['message' => 'Product deleted successfully']);

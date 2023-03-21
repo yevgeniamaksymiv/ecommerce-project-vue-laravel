@@ -40,10 +40,7 @@
                     <tr>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
-                        <td>{{
-    $categories->where('id', $product->category_id)
-            ->pluck('name')->implode('name')
-    }}</td>
+                        <td>{{ $product->category->name ?? ''}}</td>
                         <td>
                             <a href="{{ route('products.show', $product->id) }}" class="btn btn-default shadow-none">
                                 <img width="20" height="20" src="{{ asset('assets/info.svg') }}" alt="info svg">

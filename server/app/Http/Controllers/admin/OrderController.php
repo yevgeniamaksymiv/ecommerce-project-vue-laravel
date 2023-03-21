@@ -14,9 +14,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-        $deliveries = Delivery::all();
-        return view('orders.index', compact('orders', 'deliveries'));
+        $orders = Order::query()->get();
+        return view('orders.index', compact('orders'));
     }
 
     /**
