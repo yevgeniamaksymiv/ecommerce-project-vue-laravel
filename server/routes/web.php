@@ -25,30 +25,9 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::redirect('/', '/login');
 
-//Route::get('/home', function () {
-//    if (session('status')) {
-//        return redirect()->route('home')->with('status', session('status'));
-//    }
-//    return view('home');
-//})->name('home');
-
 Route::get('/admin', function () {
     return view('layouts/sidebar');
 });
-
-//Route::group([
-//    'prefix' => 'admin',
-//    'middleware' => 'is_admin',
-//], function () {
-//    Route::resources([
-//        'categories' => CategoryController::class,
-//        'deliveries' => DeliveryController::class,
-//        'orders' => OrderController::class,
-//        'products' => ProductController::class,
-//        'roles' => RoleController::class,
-//        'users' => UserController::class
-//    ]);
-//});
 
 Route::prefix('admin')->middleware('adminUsers')->group( function () {
     Route::resources([

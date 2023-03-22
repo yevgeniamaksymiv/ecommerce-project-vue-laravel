@@ -27,9 +27,11 @@
                 <th scope="col" width="80%">Name</th>
                 <th scope="col" width="10%"></th>
                 <th scope="col" width="1%">
-                    <a href="{{ route('deliveries.create') }}" class="btn btn-default shadow-none">
-                        <img width="20" height="20" src="{{ asset('assets/add.svg') }}" alt="add svg">
-                    </a>
+                    @can('create', \App\Models\Delivery::class)
+                        <a href="{{ route('deliveries.create') }}" class="btn btn-default shadow-none">
+                            <img width="20" height="20" src="{{ asset('assets/add.svg') }}" alt="add svg">
+                        </a>
+                    @endcan
                 </th>
                 </thead>
 
@@ -37,18 +39,24 @@
                     <tr>
                         <td>{{ $delivery->name }}</td>
                         <td>
-                            <a href="{{ route('deliveries.edit', $delivery->id) }}" class="btn btn-default shadow-none">
-                                <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
-                            </a>
+                            @can('update', $delivery)
+                                <a href="{{ route('deliveries.edit', $delivery->id) }}"
+                                   class="btn btn-default shadow-none">
+                                    <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
+                                </a>
+                            @endcan
                         </td>
                         <td>
-                            <form method="POST" action="{{ route('deliveries.destroy', $delivery->id) }}">
-                                @method('DELETE')
-                                @csrf
-                                <button type="submit" class="btn btn-default shadow-none">
-                                    <img width="20" height="20" src="{{ asset('assets/delete.svg') }}" alt="delete svg">
-                                </button>
-                            </form>
+                            @can('delete', $delivery)
+                                <form method="POST" action="{{ route('deliveries.destroy', $delivery->id) }}">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-default shadow-none">
+                                        <img width="20" height="20" src="{{ asset('assets/delete.svg') }}"
+                                             alt="delete svg">
+                                    </button>
+                                </form>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

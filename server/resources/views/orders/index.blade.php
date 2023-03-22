@@ -37,8 +37,8 @@
                         <td>{{ $order->order_date }}</td>
                         <td>{{ $order->delivery_address }}</td>
                         <td>{{ $order->order_amount }}</td>
-                        <td>{{ $order->user->fullName }}</td>
-                        <td>{{ $order->delivery->name }}</td>
+                        <td>{{ $order->user?->fullName }}</td>
+                        <td>{{ $order->delivery?->name }}</td>
                     </tr>
                 @endforeach
 

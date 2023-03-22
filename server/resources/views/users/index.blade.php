@@ -30,9 +30,11 @@
                 <th scope="col" width="20%">Role</th>
                 <th scope="col" width="10%"></th>
                 <th scope="col" width="1%">
-                    <a href="{{ route('users.create') }}" class="btn btn-default shadow-none">
-                        <img width="20" height="20" src="{{ asset('assets/add.svg') }}" alt="add svg">
-                    </a>
+                    @can('create', \App\Models\User::class)
+                        <a href="{{ route('users.create') }}" class="btn btn-default shadow-none">
+                            <img width="20" height="20" src="{{ asset('assets/add.svg') }}" alt="add svg">
+                        </a>
+                    @endcan
                 </th>
                 </thead>
 
@@ -41,25 +43,25 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->surname }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{
-    $roles->where('id', $user->role_id)
-            ->pluck('name')->implode('name')
-    }}</td>
-
-
+                        <td>{{ $user->role?->name }}</td>
                         <td>
-                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-default shadow-none">
-                                <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
-                            </a>
+                            @can('update', $user)
+                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-default shadow-none">
+                                    <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
+                                </a>
+                            @endcan
                         </td>
                         <td>
-                            <form method="POST" action="{{ route('users.destroy', $user->id) }}">
-                                @method('DELETE')
-                                @csrf
-                                <button type="submit" class="btn btn-default shadow-none">
-                                    <img width="20" height="20" src="{{ asset('assets/delete.svg') }}" alt="delete svg">
-                                </button>
-                            </form>
+                            @can('delete', $user)
+                                <form method="POST" action="{{ route('users.destroy', $user->id) }}">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-default shadow-none">
+                                        <img width="20" height="20" src="{{ asset('assets/delete.svg') }}"
+                                             alt="delete svg">
+                                    </button>
+                                </form>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

@@ -30,9 +30,11 @@
                 <th scope="col" width="20%">Details</th>
                 <th scope="col" width="10%"></th>
                 <th scope="col" width="1%">
-                    <a href="{{ route('products.create') }}" class="btn btn-default shadow-none">
-                        <img width="20" height="20" src="{{ asset('assets/add.svg') }}" alt="add svg">
-                    </a>
+                    @can('create', \App\Models\Product::class)
+                        <a href="{{ route('products.create') }}" class="btn btn-default shadow-none">
+                            <img width="20" height="20" src="{{ asset('assets/add.svg') }}" alt="add svg">
+                        </a>
+                    @endcan
                 </th>
                 </thead>
 
@@ -42,24 +44,33 @@
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->category->name ?? ''}}</td>
                         <td>
-                            <a href="{{ route('products.show', $product->id) }}" class="btn btn-default shadow-none">
-                                <img width="20" height="20" src="{{ asset('assets/info.svg') }}" alt="info svg">
-                            </a>
+                            @can('view', $product)
+                                <a href="{{ route('products.show', $product->id) }}"
+                                   class="btn btn-default shadow-none">
+                                    <img width="20" height="20" src="{{ asset('assets/info.svg') }}" alt="info svg">
+                                </a>
+                            @endcan
                         </td>
 
                         <td>
-                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-default shadow-none">
-                                <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
-                            </a>
+                            @can('update', $product)
+                                <a href="{{ route('products.edit', $product->id) }}"
+                                   class="btn btn-default shadow-none">
+                                    <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
+                                </a>
+                            @endcan
                         </td>
                         <td>
-                            <form method="POST" action="{{ route('products.destroy', $product->id) }}">
-                                @method('DELETE')
-                                @csrf
-                                <button type="submit" class="btn btn-default shadow-none">
-                                    <img width="20" height="20" src="{{ asset('assets/delete.svg') }}" alt="delete svg">
-                                </button>
-                            </form>
+                            @can('delete', $product)
+                                <form method="POST" action="{{ route('products.destroy', $product->id) }}">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-default shadow-none">
+                                        <img width="20" height="20" src="{{ asset('assets/delete.svg') }}"
+                                             alt="delete svg">
+                                    </button>
+                                </form>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

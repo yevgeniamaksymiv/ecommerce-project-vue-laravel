@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $this->authorize('view', Category::class);
+        $this->authorize('viewAny', Category::class);
 
         $categories = Category::all()->sortBy('name')->sortBy('parent_id');
         return view('categories.index', compact('categories'));
@@ -85,9 +85,8 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $this->authorize('delete', $category);
-        dd('test');
 
-//        $category->delete();
+        $category->delete();
         session(['message' => 'Category deleted successfully']);
         return redirect()->route('categories.index');
     }

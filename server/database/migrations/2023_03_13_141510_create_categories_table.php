@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->index('parent_id', 'category_parent_idx');
-            $table->foreign('parent_id', 'category_parent_fk')->on('categories')->references('id');
+            $table->foreign('parent_id', 'category_parent_fk')->on('categories')
+                ->references('id')->onDelete('set null');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
