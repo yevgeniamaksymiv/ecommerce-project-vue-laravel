@@ -25,7 +25,7 @@
 
                 <table class="table table-striped">
                     <thead>
-                    <th scope="col" width="1%"><input type="checkbox" name="all_permission"></th>
+                    <th scope="col" width="1%"><input type="checkbox" name="all_permission" id="checkAll"></th>
                     <th scope="col" width="20%">Name</th>
                     </thead>
 
@@ -51,3 +51,19 @@
 
     </div>
 @endsection
+
+@push('scripts')
+    <script type="text/javascript">
+        const checkAll = document.getElementById('checkAll');
+        const checkboxes = document.querySelectorAll('input.permission');
+
+        checkAll.onclick = (e) => {
+            if (e.target.checked) {
+                checkboxes.forEach(el => el.checked = true);
+            } else {
+                checkboxes.forEach(el => el.checked = false);
+            }
+        }
+    </script>
+@endpush
+

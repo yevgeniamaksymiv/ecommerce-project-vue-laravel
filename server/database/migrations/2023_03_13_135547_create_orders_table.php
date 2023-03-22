@@ -18,14 +18,15 @@ return new class extends Migration
             $table->string('delivery_address')->nullable();
             $table->integer('order_amount');
 
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->index('user_id', 'order_user_idx');
-            $table->foreign('user_id', 'order_user_fk')->on('users')->references('id');
+            $table->foreign('user_id', 'order_user_fk')->on('users')->references('id')->onDelete('set null');
 
-            $table->unsignedBigInteger('delivery_id');
+            $table->unsignedBigInteger('delivery_id')->nullable();
             $table->index('delivery_id', 'order_delivery_idx');
-            $table->foreign('delivery_id', 'order_delivery_fk')->on('deliveries')->references('id');
+            $table->foreign('delivery_id', 'order_delivery_fk')->on('deliveries')->references('id')->onDelete('set null');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

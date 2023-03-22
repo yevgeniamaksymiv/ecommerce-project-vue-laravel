@@ -14,6 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $this->authorize('view', Category::class);
+
         $categories = Category::all()->sortBy('name')->sortBy('parent_id');
         return view('categories.index', compact('categories'));
     }
@@ -23,6 +25,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Category::class);
+
         $parentCategories = Category::query()->where('parent_id', null)->get();
         return view('categories.create', compact('parentCategories'));
     }
@@ -32,6 +36,8 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        $this->authorize('create', Category::class);
+
         $data = $request->except('_token');
         Category::create($data);
 
@@ -53,6 +59,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        $this->authorize('update', $category);
+
         $parentCategories = Category::query()->where('parent_id', null)->get();
         return view('categories.edit', compact('category', 'parentCategories'));
     }
@@ -62,6 +70,8 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
+        $this->authorize('update', $category);
+
         $data = $request->except('_token');
         $category->update($data);
 
@@ -74,7 +84,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
+        $this->authorize('delete', $category);
+        dd('test');
+
+//        $category->delete();
         session(['message' => 'Category deleted successfully']);
         return redirect()->route('categories.index');
     }

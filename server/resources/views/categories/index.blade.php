@@ -28,9 +28,11 @@
                 <th scope="col" width="40%">Parent category</th>
                 <th scope="col" width="10%">
                 <th scope="col" width="1%">
-                    <a href="{{ route('categories.create') }}" class="btn btn-default shadow-none">
-                        <img width="20" height="20" src="{{ asset('assets/add.svg') }}" alt="add svg">
-                    </a>
+                    @can('create', \App\Models\Category::class)
+                        <a href="{{ route('categories.create') }}" class="btn btn-default shadow-none">
+                            <img width="20" height="20" src="{{ asset('assets/add.svg') }}" alt="add svg">
+                        </a>
+                    @endcan
                 </th>
                 </thead>
 
@@ -40,11 +42,14 @@
                         <td>{{ $categories->where('id', $category->parent_id)
                                     ->pluck('name')->implode('name') }}</td>
                         <td>
+                            @can('update', $category)
                             <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-default shadow-none">
                                 <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
                             </a>
+                            @endcan
                         </td>
                         <td>
+                            @can('delete', $category)
                             <form method="POST" action="{{ route('categories.destroy', $category->id) }}">
                                 @method('DELETE')
                                 @csrf
@@ -52,6 +57,7 @@
                                     <img width="20" height="20" src="{{ asset('assets/delete.svg') }}" alt="delete svg">
                                 </button>
                             </form>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

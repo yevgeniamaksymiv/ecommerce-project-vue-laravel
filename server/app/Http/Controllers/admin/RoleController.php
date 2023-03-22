@@ -18,7 +18,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::query()->get();
         return view('roles.index', compact('roles'));
     }
 
@@ -27,7 +27,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::all();
+        $permissions = Permission::query()->get();
         return view('roles.create', compact('permissions'));
     }
 
@@ -60,7 +60,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $permissions = Permission::all();
+        $permissions = Permission::query()->get();
         $checkedPermissions = DB::table('permission_role')
             ->where('role_id', $role->id)
             ->pluck('permission_id')->toArray();

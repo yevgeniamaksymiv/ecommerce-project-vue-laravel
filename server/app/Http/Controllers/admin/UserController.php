@@ -17,8 +17,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
-        $users = User::all()->sortByDesc('created_at');
+        $roles = Role::query()->get();
+        //$users = User::all()->sortByDesc('created_at');
+        $users = User::query()->orderBy('id', 'desc')->get();
         return view('users.index', compact('users', 'roles'));
     }
 
@@ -27,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::query()->get();
         return view('users.create', compact('roles'));
     }
 
@@ -36,7 +37,6 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $request->validated();
         User::create([
             'name' => $request->get('name'),
             'surname' => $request->get('surname'),
@@ -63,7 +63,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();
+        $roles = Role::query()->get();
 
         return view('users.edit', compact('user', 'roles'));
     }
@@ -73,7 +73,6 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $request->validated();
         $user->update(['name' => $request->get('name'),
             'surname' => $request->get('surname'),
             'email' => $request->get('email'),
