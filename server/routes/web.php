@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\admin\CategoryController;
-use App\Http\Controllers\admin\DeliveryController;
-use App\Http\Controllers\admin\OrderController;
-use App\Http\Controllers\admin\ProductController;
-use App\Http\Controllers\admin\RoleController;
-use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DeliveryController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
