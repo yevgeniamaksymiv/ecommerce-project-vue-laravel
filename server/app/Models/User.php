@@ -31,6 +31,12 @@ class User extends Authenticatable
         );
     }
 
+    public function hasPermission($permission)
+    {
+        return $this->role->permissions->contains('name', $permission);
+
+    }
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**

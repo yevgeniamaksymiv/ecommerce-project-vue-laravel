@@ -15,27 +15,6 @@
 {{--<body>--}}
 
 @extends('layouts.app')
-@section('content')
-<div class="row" style="height: 100vh;">
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-        <span class="text-center fs-4">Admin Dashboard</span>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto dropdown">
-
-            <li class="nav-item"><a class="nav-link" href="{{ route('roles.index') }}">Roles</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Categories</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Deliveries</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
-        </ul>
-    </div>
-
-    <section class="col p-0">
-        @yield('content')
-    </section>
-</div>
-@endsection
 
 {{--</body>--}}
 {{--</html>--}}
