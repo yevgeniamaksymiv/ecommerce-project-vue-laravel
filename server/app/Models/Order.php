@@ -21,4 +21,12 @@ class Order extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    protected $fillable = [
+        'order_date',
+        'delivery_address',
+        'order_amount',
+        'user_id',
+        'delivery_id',
+    ];
 }
