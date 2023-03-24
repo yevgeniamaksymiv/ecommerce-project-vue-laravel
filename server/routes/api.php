@@ -21,10 +21,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('products', [ProductController::class, 'index'])->name('products');
-Route::get('products/{product}', [ProductController::class, 'show'])->name('product');
+Route::get('products', [ProductController::class, 'index']);
+Route::get('products/{product}', [ProductController::class, 'show']);
 
-Route::get('categories', [CategoryController::class, 'index'])->name('categories');
+Route::get('categories', [CategoryController::class, 'index']);
 
-Route::get('orders', [OrderController::class, 'index'])->name('orders');
+Route::get('orders', [OrderController::class, 'index']);
 Route::post('orders', [OrderController::class, 'store']);
