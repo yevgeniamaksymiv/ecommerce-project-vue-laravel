@@ -63,9 +63,7 @@
 
 export default {
   name: "HeaderComponent",
-  components: {
-  },
-
+  
   methods: {
     login() {
       this.$router.push({
