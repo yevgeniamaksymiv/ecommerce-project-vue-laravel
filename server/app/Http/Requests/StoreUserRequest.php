@@ -26,7 +26,7 @@ class StoreUserRequest extends FormRequest
             'surname' => 'sometimes|required|string|min:3|max:100',
             'email' => 'sometimes|required|string|email:rfc,dns|unique:users,email,'.$this->id,
             'password' => 'sometimes|required|min:8',
-            'role_id' => 'sometimes|required|integer|exists:App\Models\Role,id',
+            'role_id' => 'nullable|integer|exists:App\Models\Role,id',
         ];
     }
 
