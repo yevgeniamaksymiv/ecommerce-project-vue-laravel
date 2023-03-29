@@ -22,17 +22,14 @@ class UserController extends Controller
                 'password' => Hash::make($request->get('password')),
             ]);
 
-            $data['token'] = $user->createToken('userToken')->plainTextToken;
-            $data['name'] = $user->name;
-            $response = [
-                'data' => $data,
-                'message' => 'Ви успішно зареєструвались'
-                ];
+            $response['token'] = $user->createToken('userToken')->plainTextToken;
+            $response['name'] = $user->name;
+
             return response()->json($response, 200);
 
         } catch (error) {
             $response = [
-                'message' => $request->messages()
+                'message' => 'Цей емейл вже існує'
             ];
             return response()->json($response, 400);
         }
@@ -41,21 +38,17 @@ class UserController extends Controller
 
     public function login(LoginUserRequest $request)
     {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                $user = $request->user();
-                $data['token'] = $user->createToken('userToken')->plainTextToken;
-                $data['name'] = $user->name;
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = $request->user();
+            $response['token'] = $user->createToken('userToken')->plainTextToken;
+            $response['name'] = $user->name;
 
-            $response = [
-                'data' => $data,
-                'message' => 'Ви успішно ввійшли в свій акаунт'
-            ];
             return response()->json($response, 200);
-            } else {
-                $response = [
-                    'error' => 'Невірний емейл або пароль'
-                ];
-                return response()->json($response, 400);
-            }
+        } else {
+            $response = [
+                'message' => 'Невірний емейл або пароль'
+            ];
+            return response()->json($response, 400);
+        }
     }
 }
