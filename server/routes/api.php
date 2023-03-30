@@ -32,3 +32,4 @@ Route::post('orders/store', [OrderController::class, 'store']);
 
 Route::post('users/register', [UserController::class, 'register']);
 Route::post('users/login', [UserController::class, 'login']);
+Route::post('users/logout', [UserController::class, 'logout']);
