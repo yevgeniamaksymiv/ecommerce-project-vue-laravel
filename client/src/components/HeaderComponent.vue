@@ -14,7 +14,7 @@
           <router-link to="/">Новинки</router-link>
         </el-menu-item>
         <el-menu-item index="3">
-          <router-link to="/"><ClothesOverlayMenu /></router-link>
+          <router-link to="/clothes"><ClothesOverlayMenu /></router-link>
         </el-menu-item>
         <el-menu-item index="4">
           <router-link to="/">Аксесуари</router-link>
@@ -40,9 +40,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import LoginPopover from '@/components/HomePage/Popovers/LoginPopover.vue';
-import CabinetPopover from '@/components/HomePage/Popovers/CabinetPopover.vue';
-import ClothesOverlayMenu from '@/components/HomePage/Popovers/ClothesOverlayMenu.vue';
+import LoginPopover from '@/components/Popovers/LoginPopover.vue';
+import CabinetPopover from '@/components/Popovers/CabinetPopover.vue';
+import ClothesOverlayMenu from '@/components/Popovers/ClothesOverlayMenu.vue';
 
 export default {
   name: "HeaderComponent",
@@ -75,4 +75,5 @@ ul li a {
   font-size: 16px;
   letter-spacing: .5px;
 }
+
 </style>

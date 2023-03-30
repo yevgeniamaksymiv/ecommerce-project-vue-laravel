@@ -60,7 +60,7 @@ import useValidate from '@vuelidate/core';
 import { required, minLength, maxLength, email } from '@vuelidate/validators';
 
 export default {
-  name: "LoginForm",
+  name: "LoginComponent",
 
   data() {
     return {

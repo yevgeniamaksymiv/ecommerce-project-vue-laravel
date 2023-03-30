@@ -11,13 +11,7 @@ const categoryModule = {
     getCategories: (state) => state.categories,
     
     getCategoriesById: (state) => (id) => {
-      const categoriesNames = [];
-      state.categories.forEach((el) => {
-        if (el.parent_id === id) {
-          categoriesNames.push(el.name);
-        }
-      });
-      return categoriesNames;
+      return state.categories.filter((el) => el.parent_id === id);
     },
   },
 

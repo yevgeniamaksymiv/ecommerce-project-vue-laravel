@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "MainComponent"
+  name: "HomeComponent"
 }
 </script>
 

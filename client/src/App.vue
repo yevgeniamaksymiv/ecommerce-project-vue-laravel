@@ -1,14 +1,30 @@
 <template>
   <div class="common-layout">
-      <router-view></router-view>
+    <el-container>
+      <el-header>
+        <HeaderComponent />
+      </el-header>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+      <el-footer>
+        <FooterComponent />
+      </el-footer>
+    </el-container>
+
   </div>
 </template>
 
 <script>
+import HeaderComponent from '@/components/HeaderComponent.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
+
 
 export default {
   name: 'App',
   components: {
+    HeaderComponent,
+    FooterComponent
   }
 }
 </script>

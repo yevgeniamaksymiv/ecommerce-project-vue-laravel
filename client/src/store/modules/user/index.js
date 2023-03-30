@@ -61,6 +61,18 @@ const userModule = {
           commit('setErrorSignup', error.response.data['message']);
         });
     },
+
+    logout({ commit }, payload) {
+      axiosBase
+        .post('/api/users/logout', payload)
+        .then((response) => {
+          if (response.status === 200) {
+            commit('setUser', { name: null, token: null });
+            commit('setIsAuthenticate', false);
+          }
+        })
+        // .catch((error) => {});
+    },
   },
 };
 

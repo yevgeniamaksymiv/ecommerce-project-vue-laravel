@@ -17,7 +17,7 @@
     </div>
     <el-divider />
     <div>
-      <el-button index="3" type="info" link @click="logout">
+      <el-button index="3" type="info" link @click="logoutUser">
         <el-icon color="#909399" :size="25">
           <SwitchButton />
         </el-icon>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'CabinetPopover',
@@ -46,7 +46,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['setUser', 'setIsAuthenticate']), 
+    ...mapActions(['logout']), 
 
     account() {
       // this.$router.push({
@@ -54,9 +54,11 @@ export default {
       // })
     },
 
-    logout() {
-      this.setUser({name: null, token: null});
-      this.setIsAuthenticate(false);
+    logoutUser() {
+      this.logout(this.getUser);
+      this.$router.push({
+        name: 'home',
+      });
     }
   },
 }
