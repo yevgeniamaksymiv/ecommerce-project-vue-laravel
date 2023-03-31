@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Filters\ProductFilter;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductsResource;
 use App\Models\Product;
@@ -13,9 +14,9 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(ProductFilter $filter)
     {
-        $products = Product::paginate(20);
+        $products = Product::filter($filter)->paginate(20);
 
         return ProductsResource::collection($products);
     }
@@ -23,9 +24,12 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function getColorsSizes()
     {
-        //
+        $colors = Product::query()->distinct()->pluck('color')->toArray();
+        $sizes = Product::query()->distinct()->pluck('size')->toArray();
+        $data = ['colors'=> $colors, 'sizes' => $sizes];
+        return response()->json($data, 200);
     }
 
     /**

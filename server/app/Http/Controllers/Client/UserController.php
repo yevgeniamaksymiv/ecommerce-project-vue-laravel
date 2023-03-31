@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\Sanctum;
 
 class UserController extends Controller
 {
@@ -42,6 +43,7 @@ class UserController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = $request->user();
             $response['token'] = $user->createToken('userToken')->plainTextToken;
+//            $request->session()->regenerate();
             $response['name'] = $user->name;
 
             return response()->json($response, 200);
@@ -55,7 +57,33 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
+
+
+//        Auth::user()->tokens()->delete();
+
+//        $request->user()->currentAccessToken()->delete();
+//
+//        if ($token = $request->bearerToken()) {
+//            $model = Sanctum::$personalAccessTokenModel;
+//            $accessToken = $model::findToken($token);
+//            $accessToken->delete();
+//        }
+
+//        $user = $request->user();
+//        foreach ($user->tokens as $token) {
+//            $token->revoke();
+//        }
+//
+//        Auth::logout();
+
+//        auth('sanctum')->user()->tokens()->delete();
+//
+//        dd($request->user());
+
+//          $request->user()->tokens()->delete();
         Auth::logout();
+//        $request->session()->invalidate();
+//        $request->session()->regenerateToken();
 
         return response()->json([
             'message' => 'Successfully logged out'

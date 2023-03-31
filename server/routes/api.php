@@ -18,18 +18,28 @@ use App\Http\Controllers\Client\UserController;
 |
 */
 
+Route::post('users/register', [UserController::class, 'register']);
+Route::post('users/login', [UserController::class, 'login']);
+Route::get('users/logout', [UserController::class, 'logout']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//Route::middleware('auth:sanctum')->group(function () {
+//    Route::get('/user', function (Request $request) {
+//        return $request->user();
+//    });
+//});
+
+Route::get('products/colors_sizes', [ProductController::class, 'getColorsSizes']);
 Route::get('products', [ProductController::class, 'index']);
 Route::get('products/{product}', [ProductController::class, 'show']);
+
 
 Route::get('categories', [CategoryController::class, 'index']);
 
 Route::get('orders', [OrderController::class, 'index']);
 Route::post('orders/store', [OrderController::class, 'store']);
 
-Route::post('users/register', [UserController::class, 'register']);
-Route::post('users/login', [UserController::class, 'login']);
-Route::post('users/logout', [UserController::class, 'logout']);
