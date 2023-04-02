@@ -57,6 +57,7 @@ ul {
   background-color: #fff;
   overflow-x: hidden;
   transition: 0.5s;
+  opacity: .95;
   box-shadow:  0 20px 20px -20px rgba(0, 0, 0, 0.8);
 }
 

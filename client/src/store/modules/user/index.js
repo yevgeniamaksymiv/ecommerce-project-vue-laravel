@@ -62,9 +62,9 @@ const userModule = {
         });
     },
 
-    logout({ commit }, payload) {
+    logout({ commit }) {
       axiosBase
-        .post('/api/users/logout', payload)
+        .get('/api/users/logout')
         .then((response) => {
           if (response.status === 200) {
             commit('setUser', { name: null, token: null });

@@ -3,7 +3,8 @@
     <el-container>
       <el-aside width="200px">
         <el-menu>
-          <el-menu-item index="" v-for="category in this.getCategoriesById(1)" :key="category.name">
+          <el-menu-item index="" ref="item" v-for="category in this.getCategoriesById(1)" :key="category.name"
+            @click="filterByCategory(category.name)">
             {{ category.name }}
           </el-menu-item>
         </el-menu>
@@ -11,27 +12,29 @@
       <el-main>
         <el-row :gutter="20">
           <el-col :span="5">
-            <el-select v-model="value" class="m-2" placeholder="СОРТУВАТИ ЗА" size="large">
-              <el-option label="ЗРОСТАННЯ ЦІНИ" />
-              <el-option label="ЗНИЖЕННЯ ЦІНИ" />
-              <el-option label="НАЙНОВІШЕ" />
+            <el-select v-model="sortValue" class="m-2" placeholder="СОРТУВАТИ ЗА" size="large">
+              <el-option label="ЗРОСТАННЯ ЦІНИ" value="asc" />
+              <el-option label="ЗНИЖЕННЯ ЦІНИ" value="desc" />
+              <el-option label="НАЙНОВІШЕ" value="date" />
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="value" class="m-2" placeholder="РОЗМІРИ" size="large">
+            <el-select v-model="filters.size" clearable class="m-2" placeholder="РОЗМІРИ" size="large">
+              <el-option v-for="(size, key) in this.getSizes" :key="key" :value="size" :label="size" />
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="value" class="m-2" placeholder="КОЛЬОРИ" size="large">
+            <el-select v-model="filters.color" clearable class="m-2" placeholder="КОЛЬОРИ" size="large">
+              <el-option v-for="(color, key) in this.getColors" :key="key" :value="color" :label="color" />
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="value" class="m-2" placeholder="ЦІНА" size="large">
-              <el-option label="МЕНШЕ 1000 ₴" />
-              <el-option label="1000 - 2000 ₴" />
-              <el-option label="2000 - 5000 ₴" />
-              <el-option label="5000 - 10000 ₴" />
-              <el-option label="БІЛЬШЕ 10000 ₴" />
+            <el-select v-model="filters.price" clearable class="m-2" placeholder="ЦІНА" size="large">
+              <el-option label="МЕНШЕ 1000 ₴" value="0,1000" />
+              <el-option label="1000 - 2000 ₴" value="1000,2000" />
+              <el-option label="2000 - 5000 ₴" value="2000,5000" />
+              <el-option label="5000 - 10000 ₴" value="5000,10000" />
+              <el-option label="БІЛЬШЕ 10000 ₴" value="10000" />
             </el-select>
           </el-col>
           <el-col :span="4" style="margin-top: 12px;">
@@ -42,7 +45,7 @@
         <el-row :gutter="20">
           <el-col :span="6" v-for="(product, key) in this.getProducts" :key="key">
             <el-card :body-style="{ padding: '0px' }">
-              <img width="250" height="335" :src="product.img_path" class="image" />
+              <img :src="product.img_path" class="image" />
               <div class="content">
                 <span>{{ product.name }}</span>
                 <span>{{ product.price }} ₴</span>
@@ -62,18 +65,63 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'ClothesComponent',
 
+  data() {
+    return {
+      sortValue: null,
+      filters: {
+        size: null,
+        price: null,
+        color: null
+      }
+
+    }
+  },
+
   mounted() {
     this.getCategories();
     this.getAllProducts();
+    this.getColorsSizes();
+  },
+
+  watch: {
+    filters: {
+      handler(filters) {
+        this.filterProducts(filters);
+      },
+      deep: true,
+    },
+
+    sortValue(val) {
+      this.sortBySelectedValue(val);
+    }
   },
 
   methods: {
-    ...mapActions(['getCategories', 'getAllProducts']),
+    ...mapActions(['getCategories', 'getAllProducts', 'getColorsSizes', 'filterProducts', 'sortProducts']),
 
+    sortBySelectedValue(sortValue) {
+      if (sortValue === 'date') {
+        this.sortProducts({
+          params: {
+            date: sortValue
+          }
+        });
+      } else {
+        this.sortProducts({
+          params: {
+            price: sortValue
+          }
+        });
+      }
+    },
+
+    filterByCategory(categoryName) {
+      console.log('category: ', categoryName)
+    }
   },
 
   computed: {
-    ...mapGetters(['getCategoriesById', 'getProducts'])
+    ...mapGetters(['getCategoriesById', 'getProducts', 'getColors', 'getSizes'])
   }
 }
 </script>
@@ -90,17 +138,16 @@ ul li a {
   color: #000;
 }
 
-/* .el-row {
-  margin-bottom: 10px;
-} */
-
 .el-col {
   margin-bottom: 20px;
 }
 
 .image {
-  width: 100%;
   display: block;
+  object-fit: cover;
+  object-position: top center;
+  width: 250px;
+  height: auto;
 }
 
 .info {
@@ -113,8 +160,8 @@ ul li a {
 }
 
 .el-menu-item.is-active {
-    color: #1e1f20;
-    height: 30px;
+  color: #1e1f20;
+  height: 30px;
 }
 
 aside {
@@ -127,7 +174,7 @@ aside {
   flex-direction: column;
 }
 
-.content > span:nth-child(2) {
+.content>span:nth-child(2) {
   color: #82858b;
 }
 
@@ -141,4 +188,5 @@ span {
 .button {
   margin: 0;
 }
+
 </style>

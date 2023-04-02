@@ -55,7 +55,7 @@ export default {
     },
 
     logoutUser() {
-      this.logout(this.getUser);
+      this.logout();
       this.$router.push({
         name: 'home',
       });
