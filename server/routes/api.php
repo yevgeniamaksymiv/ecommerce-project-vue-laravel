@@ -33,6 +33,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    });
 //});
 
+Route::post('products/filter', [ProductController::class, 'filter']);
+Route::get('products/sort', [ProductController::class, 'sort']);
 Route::get('products/colors_sizes', [ProductController::class, 'getColorsSizes']);
 Route::get('products', [ProductController::class, 'index']);
 Route::get('products/{product}', [ProductController::class, 'show']);
