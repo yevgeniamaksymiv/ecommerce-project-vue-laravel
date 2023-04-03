@@ -25,14 +25,15 @@ class FilterProductRequest extends FormRequest
             'price' => 'sometimes',
             'size' => 'sometimes',
             'color' => 'sometimes',
+            'category_id' => 'sometimes'
         ];
     }
 
     public function messages(): array
     {
         return [
-            'price' => 'Field price is required and must be a string',
-            'size' => 'Field size is required and must be a string',
+            'price' => 'Field price must be a string',
+            'size' => 'Field size must be a string',
             'color' => 'Field color must be a string',
         ];
     }
