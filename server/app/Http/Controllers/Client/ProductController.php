@@ -23,24 +23,19 @@ class ProductController extends Controller
         return ProductsResource::collection($products);
     }
 
-    public function sort(SortProductRequest $request)
-    {
-        if ($request->get('price')) {
-            $products = Product::query()->orderBy('price', $request->get('price'))->paginate(20);
-            return ProductsResource::collection($products);
-        }
-        if ($request->get('date')) {
-            $products = Product::query()->orderBy('date', 'desc')->paginate(20);
-            return ProductsResource::collection($products);
-        }
-    }
 
     public function filter(FilterProductRequest $request)
     {
-        $data = $request->validated();
-        $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
-        $products = Product::filter($filter)->paginate(20);
+        $filters = $request->get('filters');
+        $sorters = $request->get('sorters');
 
+        $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($filters)]);
+
+        $query = Product::filter($filter);
+        if (isset($sorters['field'])) {
+            $query->orderBy($sorters['field'], $sorters['direction']);
+        }
+        $products = $query->paginate(20);
         return ProductsResource::collection($products);
     }
     /**

@@ -22,19 +22,21 @@ class FilterProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'price' => 'sometimes',
-            'size' => 'sometimes',
-            'color' => 'sometimes',
-            'category_id' => 'sometimes'
+            'filters.price' => 'nullable',
+            'filters.size' => 'nullable',
+            'filters.color' => 'nullable',
+            'filters.category_id' => 'nullable',
+            'sorters.field' => 'nullable',
+            'sorters.direction' => 'nullable',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'price' => 'Field price must be a string',
-            'size' => 'Field size must be a string',
-            'color' => 'Field color must be a string',
+            'filters.price' => 'Field price must be a string',
+            'filters.size' => 'Field size must be a string',
+            'filters.color' => 'Field color must be a string',
         ];
     }
 }
