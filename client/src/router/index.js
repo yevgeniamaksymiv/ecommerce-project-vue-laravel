@@ -18,6 +18,11 @@ const routes = [
     component: () => import('@/components/ClothesComponent.vue'),
   },
   {
+    path: '/product/:id',
+    name: 'product',
+    component: () => import('@/components/ProductComponent.vue'),
+  },
+  {
     path: '/404',
     name: '404',
     component: () => '',
