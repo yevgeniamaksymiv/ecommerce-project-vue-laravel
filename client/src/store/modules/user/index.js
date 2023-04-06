@@ -6,6 +6,7 @@ const userModule = {
     return {
       user: {
         name: null,
+        surname: null,
         token: null,
       },
       isAuthenticate: false,
@@ -71,7 +72,9 @@ const userModule = {
             commit('setIsAuthenticate', false);
           }
         })
-        // .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

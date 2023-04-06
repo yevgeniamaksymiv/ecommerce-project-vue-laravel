@@ -6,7 +6,9 @@
         <div style="padding: 14px">
           <el-collapse accordion>
             <el-collapse-item title="Опис">
-              <div style="text-align: left;">{{ this.getProduct.description }}</div>
+              <div style="text-align: left; word-wrap: break-word;">
+                {{ this.getProduct.description }}
+              </div>
             </el-collapse-item>
             <el-collapse-item title="Догляд">
               <div style="text-align: left;"></div>
@@ -124,10 +126,6 @@ export default {
 
   computed: {
     ...mapGetters(['getProduct', 'getColors']),
-
-    // description() {
-    //   return this.getProduct.description.match(/.{1,6}/g).join(' ');
-    // },
 
     color() {
       return this.colorHex[this.getProduct.color];

@@ -94,18 +94,11 @@ export default {
       this.$router.push({
         name: 'order',
       });
-      // return this.getIsAuthenticate === true 
-      //   ?  this.$router.push({
-      //     name: 'order',
-      //   })
-      //   : this.$router.push({
-      //     name: 'login',
-      //   })
     },
   },
 
   computed: {
-    ...mapGetters(['getCart', 'getCartQuantity', 'getTotalPrice', 'getIsAuthenticate']),
+    ...mapGetters(['getCart', 'getCartQuantity', 'getTotalPrice']),
   },
 }
 

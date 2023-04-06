@@ -72,7 +72,6 @@ const productModule = {
       axiosBase
         .get('api/products/colors_sizes')
         .then((response) => {
-          console.log(response.data)
           commit('setColorsSizes', response.data);
         })
         .catch((error) => {
