@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Client\CategoryController;
+use App\Http\Controllers\Client\DeliveryController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\UserController;
 
@@ -40,6 +41,7 @@ Route::get('products/{product}', [ProductController::class, 'show']);
 
 
 Route::get('categories', [CategoryController::class, 'index']);
+Route::get('deliveries', [DeliveryController::class, 'index']);
 
 Route::get('orders', [OrderController::class, 'index']);
 Route::post('orders/store', [OrderController::class, 'store']);

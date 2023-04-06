@@ -43,8 +43,10 @@ class ProductController extends Controller
      */
     public function getColorsSizes()
     {
-        $colors = Product::query()->distinct()->pluck('color')->toArray();
-        $sizes = Product::query()->distinct()->pluck('size')->toArray();
+        $colors = Product::query()->distinct()
+            ->orderBy('color', 'asc')->pluck('color')->toArray();
+        $sizes = Product::query()->distinct()
+            ->orderBy('size', 'asc')->pluck('size')->toArray();
         $data = ['colors'=> $colors, 'sizes' => $sizes];
         return response()->json($data, 200);
     }
