@@ -1,9 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeComponent from '@/components/HomeComponent.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeComponent from '@/components/HomeComponent.vue';
+import store from '@/store/index';
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: HomeComponent,
   },
@@ -23,6 +24,25 @@ const routes = [
     component: () => import('@/components/ProductComponent.vue'),
   },
   {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('@/components/CartComponent.vue'),
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: () => import('@/components/OrderComponent.vue'),
+
+    beforeEnter: (to, from, next) => {
+      const isAuth = store._state.data.userModule.isAuthenticate;
+      if (to.name !== 'login' && !isAuth) {
+        next({ name: 'login' });
+      } else {
+        next();
+      }
+    },
+  },
+  {
     path: '/404',
     name: '404',
     component: () => '',
@@ -33,12 +53,11 @@ const routes = [
   },
 ];
 
-  const router = createRouter({
-    linkActiveClass: 'active',
-    linkExactActiveClass: 'exact-active',
-    history: createWebHistory(),
-    routes,
-  });
+const router = createRouter({
+  linkActiveClass: 'active',
+  linkExactActiveClass: 'exact-active',
+  history: createWebHistory(),
+  routes,
+});
 
-  export default router;
-
+export default router;

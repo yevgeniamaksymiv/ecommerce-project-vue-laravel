@@ -34,7 +34,6 @@
               <el-option label="1000 - 2000 ₴" value="1000,2000" />
               <el-option label="2000 - 5000 ₴" value="2000,5000" />
               <el-option label="5000 - 10000 ₴" value="5000,10000" />
-              <el-option label="БІЛЬШЕ 10000 ₴" value="10000" />
             </el-select>
           </el-col>
           <el-col :xs="24" :sm="12" :md="4" :lg="4" style="margin-top: 12px;">
@@ -45,7 +44,7 @@
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="(product, key) in this.getProducts" :key="key">
             <el-card :body-style="{ padding: '0px' }">
-              <img :src="product.img_path" class="image" />
+              <img :src="product.img_path" class="image" @click="showProduct(product.id)" />
               <div class="content">
                 <span>{{ product.name }}</span>
                 <span>{{ product.price }} ₴</span>
@@ -95,10 +94,16 @@ export default {
   watch: {
     filtersSortData: {
       handler(filters) {
-        filters.page = this.currentPage;
         this.filterProducts(filters);
       },
       immediate: true,
+      deep: true,
+    },
+
+    'filtersSortData.filters': {
+      handler() {
+        this.currentPage = 1;
+      },
       deep: true,
     },
 
@@ -107,10 +112,7 @@ export default {
     },
 
     currentPage(page) {
-        this.filtersSortData['page'] = page;
-        this.filterProducts(this.filtersSortData);
-
-      // this.sortBySelectedValue(this.sortValue, page); 
+      this.filtersSortData['page'] = page;
     }
   },
 

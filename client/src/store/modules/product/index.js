@@ -13,8 +13,8 @@ const productModule = {
   getters: {
     getProducts: (state) => state.products,
     getProduct: (state) => state.product,
-    getColors: (state) => state.colorsSizes.colors.sort(),
-    getSizes: (state) => state.colorsSizes.sizes.sort(),
+    getColors: (state) => state.colorsSizes.colors,
+    getSizes: (state) => state.colorsSizes.sizes,
     getTotal: (state) => state.total,
   },
 
@@ -35,19 +35,25 @@ const productModule = {
 
   actions: {
     getAllProducts({ commit }, page = 1) {
-      axiosBase.get(`api/products?page=${page}`).then(({ data }) => {
+      axiosBase.get(`api/products?page=${page}`)
+      .then(({ data }) => {
         commit('setProducts', data.data);
         commit('setTotal', data.meta.total);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      // .catch((error) => {
-      //   console.log(error);
-      // });
     },
 
     getProductById({ commit }, id) {
-      axiosBase.get(`api/products/${id}`).then(({ data }) => {
-        commit('setProduct', data.data);
-      });
+      axiosBase
+        .get(`api/products/${id}`)
+        .then(({ data }) => {
+          commit('setProduct', data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
     filterProducts({ commit }, filters) {
@@ -66,6 +72,7 @@ const productModule = {
       axiosBase
         .get('api/products/colors_sizes')
         .then((response) => {
+          console.log(response.data)
           commit('setColorsSizes', response.data);
         })
         .catch((error) => {

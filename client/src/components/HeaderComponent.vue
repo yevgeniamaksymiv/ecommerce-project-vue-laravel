@@ -29,11 +29,11 @@
       <template v-else>
         <LoginPopover />
       </template>
-      <el-button index="4" type="info" link class="ml-2">
+      <el-button index="4" type="info" link class="ml-2" @click="goToCart">
         <el-icon color="#909399" :size="20">
           <ShoppingBag />
         </el-icon>
-        Кошик</el-button>
+        Кошик {{ this.getCartQuantity ? `(${getCartQuantity})` : '' }}</el-button>
     </el-col>
   </el-row>
 </template>
@@ -53,10 +53,15 @@ export default {
   },
 
   methods: {
+    goToCart() {
+      this.$router.push({
+        name: 'cart',
+      });
+    }
   },
 
   computed: {
-    ...mapGetters(['getUser'])
+    ...mapGetters(['getUser', 'getCartQuantity'])
   }
 }
 

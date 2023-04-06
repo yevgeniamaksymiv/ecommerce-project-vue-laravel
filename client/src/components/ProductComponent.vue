@@ -6,7 +6,7 @@
         <div style="padding: 14px">
           <el-collapse accordion>
             <el-collapse-item title="Опис">
-              <div style="text-align: left;">{{ description }}</div>
+              <div style="text-align: left;">{{ this.getProduct.description }}</div>
             </el-collapse-item>
             <el-collapse-item title="Догляд">
               <div style="text-align: left;"></div>
@@ -37,7 +37,7 @@
           </el-select>
         </div>
         <div>
-          <el-button type="primary" size="large" @click="dialogVisible = true">
+          <el-button type="primary" size="large" @click="addProductToCart">
             <el-icon color="ffffff" :size="20">
               <ShoppingBag />
             </el-icon>
@@ -64,7 +64,7 @@
                 <el-button @click="dialogVisible = false" size="large">
                   Повернутись до покупок
                 </el-button>
-                <el-button type="primary" @click="dialogVisible = false" size="large">
+                <el-button type="primary" @click="goToCart" size="large">
                   Перейти у кошик
                 </el-button>
               </span>
@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
   name: 'ProductComponent',
@@ -103,15 +103,31 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getProductById']),
+    ...mapActions(['getProductById', 'addToCart']),
+    ...mapMutations(['clearCart']),
+
+    addProductToCart() {
+      this.dialogVisible = true;
+      this.addToCart({
+        product: this.getProduct,
+        quantity: 1
+      });
+    },
+
+    goToCart() {
+      this.dialogVisible = false;
+      this.$router.push({
+        name: 'cart',
+      });
+    }
   },
 
   computed: {
     ...mapGetters(['getProduct', 'getColors']),
 
-    description() {
-      return this.getProduct.description.match(/.{1,6}/g).join(' ');
-    },
+    // description() {
+    //   return this.getProduct.description.match(/.{1,6}/g).join(' ');
+    // },
 
     color() {
       return this.colorHex[this.getProduct.color];
