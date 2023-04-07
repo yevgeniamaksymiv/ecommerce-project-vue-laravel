@@ -23,7 +23,6 @@ class Order extends Model
     }
 
     protected $fillable = [
-        'order_date',
         'delivery_address',
         'order_amount',
         'user_id',

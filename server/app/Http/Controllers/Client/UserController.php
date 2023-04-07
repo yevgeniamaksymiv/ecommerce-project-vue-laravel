@@ -26,6 +26,8 @@ class UserController extends Controller
 
             $response['token'] = $user->createToken('userToken')->plainTextToken;
             $response['name'] = $user->name;
+            $response['surname'] = $user->surname;
+            $response['id'] = $user->id;
 
             return response()->json($response, 200);
 
@@ -46,6 +48,7 @@ class UserController extends Controller
 //            $request->session()->regenerate();
             $response['name'] = $user->name;
             $response['surname'] = $user->surname;
+            $response['id'] = $user->id;
 
             return response()->json($response, 200);
         } else {

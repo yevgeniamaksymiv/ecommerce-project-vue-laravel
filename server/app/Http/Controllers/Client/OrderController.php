@@ -30,11 +30,14 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrderRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->except('_token');
+        $data = $request->except('products');
+        $products = $request->get('products');
         $order = Order::create($data);
-        return new OrderResource($order);
+        $order->products()->sync($products);
+
+        return response(200);
     }
 
     /**
