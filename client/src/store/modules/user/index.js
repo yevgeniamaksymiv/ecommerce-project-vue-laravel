@@ -5,6 +5,7 @@ const userModule = {
   state() {
     return {
       user: {
+        id: null,
         name: null,
         surname: null,
         token: null,
@@ -68,7 +69,7 @@ const userModule = {
         .get('/api/users/logout')
         .then((response) => {
           if (response.status === 200) {
-            commit('setUser', { name: null, token: null });
+            commit('setUser', { id: null, name: null, surname: null, token: null });
             commit('setIsAuthenticate', false);
           }
         })

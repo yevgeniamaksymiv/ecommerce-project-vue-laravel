@@ -84,7 +84,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['removeProductFromCart']),
+    ...mapActions(['removeFromCart']),
 
     removeProduct(id) {
       this.removeFromCart(id);

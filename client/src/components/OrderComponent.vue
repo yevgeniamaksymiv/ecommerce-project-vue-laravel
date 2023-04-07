@@ -7,32 +7,32 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="Ім'я">
-                <el-input size="large" v-model="orderData.name" />
-                <el-text class="mx-1" type="danger" v-for="error of orderFormRef.orderData.name.$errors"
+                <el-input size="large" v-model="orderInfo.name" :value="getUser.name" />
+                <!-- <el-text class="mx-1" size="small" type="danger" v-for="error of orderFormRef.orderInfo.name.$errors"
                   :key="error.$uid">
-                  {{ error.$message }}</el-text>
+                  {{ error.$message }}</el-text> -->
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="Прізвище">
-                <el-input size="large" v-model="orderData.surname" />
-                <el-text class="mx-1" type="danger" v-for="error of orderFormRef.orderData.surname.$errors"
-                  :key="error.$uid">{{ error.$message }}</el-text>
+                <el-input size="large" v-model="orderInfo.surname" :value="getUser.surname" />
+                <!-- <el-text class="mx-1" size="small" type="danger" v-for="error of orderFormRef.orderInfo.surname.$errors"
+                  :key="error.$uid">{{ error.$message }}</el-text> -->
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="Вулиця">
-                <el-input size="large" v-model="orderData.street" />
-                <el-text class="mx-1" type="danger" v-for="error of orderFormRef.orderData.street.$errors"
+                <el-input size="large" v-model="orderInfo.street" />
+                <el-text class="mx-1" size="small" type="danger" v-for="error of orderFormRef.orderInfo.street.$errors"
                   :key="error.$uid">{{ error.$message }}</el-text>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="Номер дому, квартира">
-                <el-input size="large" v-model="orderData.home" />
-                <el-text class="mx-1" type="danger" v-for="error of orderFormRef.orderData.home.$errors"
+                <el-input size="large" v-model="orderInfo.home" />
+                <el-text class="mx-1" size="small" type="danger" v-for="error of orderFormRef.orderInfo.home.$errors"
                   :key="error.$uid">{{
                     error.$message }}</el-text>
               </el-form-item>
@@ -41,15 +41,15 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="Поштовий індекс">
-                <el-input size="large" v-model="orderData.postIndex" />
-                <el-text class="mx-1" type="danger" v-for="error of orderFormRef.orderData.postIndex.$errors"
+                <el-input size="large" v-model="orderInfo.postIndex" />
+                <el-text class="mx-1" size="small" type="danger" v-for="error of orderFormRef.orderInfo.postIndex.$errors"
                   :key="error.$uid">{{ error.$message }}</el-text>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="Місто">
-                <el-input size="large" v-model="orderData.city" />
-                <el-text class="mx-1" type="danger" v-for="error of orderFormRef.orderData.city.$errors"
+                <el-input size="large" v-model="orderInfo.city" />
+                <el-text class="mx-1" size="small" type="danger" v-for="error of orderFormRef.orderInfo.city.$errors"
                   :key="error.$uid">{{
                     error.$message }}</el-text>
               </el-form-item>
@@ -57,14 +57,15 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-select v-model="orderData.delivery" clearable class="m-2" placeholder="Спосіб доставки" size="large">
+              <el-select v-model="orderInfo.delivery" clearable class="m-2" placeholder="Спосіб доставки" size="large">
                 <el-option v-for="(delivery, key) in this.getDeliveries" :key="key" :value="delivery.id"
                   :label="delivery.name" />
               </el-select>
+              <el-text class="mx-1" size="small" type="danger" v-for="error of orderFormRef.orderInfo.delivery.$errors"
+                :key="error.$uid">{{
+                  error.$message }}</el-text>
             </el-col>
           </el-row>
-          <el-text class="mx-1" type="danger">{{ this.getErrorOrder }}</el-text>
-          <el-button size="large" plain type="primary" @click="saveOrderData">Зберегти</el-button>
         </el-form>
       </div>
     </el-col>
@@ -75,12 +76,12 @@
       </el-row>
       <el-row class="order-info">
         <div>Сума доставки</div>
-        <div>UAH</div>
+        <div>150 UAH</div>
       </el-row>
       <el-divider />
       <el-row class="order-info">
         <div>Загальна сума <small>із ПДВ</small></div>
-        <div>{{ this.getTotalPrice }} UAH</div>
+        <div>{{ orderAmount }} UAH</div>
       </el-row>
       <el-row>
         <el-button type="primary" size="large" @click="submitOrder">
@@ -89,12 +90,22 @@
       </el-row>
     </el-col>
   </el-row>
+  <el-dialog v-model="dialogVisible" title="Замовлення успішно сформовано">
+    <div>Очікуйте інформацію про доставку на свою електронну адресу</div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="closeDialog">Cancel</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script>
+import axiosBase from '@/axios-config';
 import { mapGetters, mapActions } from 'vuex';
 import useValidate from '@vuelidate/core';
 import { required, minLength, maxLength, numeric } from '@vuelidate/validators';
+import { mapValues, keyBy } from 'lodash';
 
 
 export default {
@@ -102,7 +113,8 @@ export default {
   data() {
     return {
       orderFormRef: useValidate(),
-      orderData: {
+      dialogVisible: false,
+      orderInfo: {
         name: null,
         surname: null,
         street: null,
@@ -115,7 +127,40 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getTotalPrice', 'getDeliveries', 'getUser']),
+    ...mapGetters(['getTotalPrice', 'getDeliveries', 'getUser', 'getCart']),
+
+    deliveryAddress() {
+      return `${this.orderInfo.street} ${this.orderInfo.home} ${this.orderInfo.city} ${this.orderInfo.postIndex}`;
+    },
+
+    orderAmount() {
+      return this.getTotalPrice + 150;
+    },
+
+    productsInCart() {
+      const products = [];
+      this.getCart.forEach(el => {
+        return products.push({
+          'product_id': el.product.id,
+          'count': el.quantity
+        });
+      });
+      return mapValues(
+        keyBy(products, 'product_id'),
+        ({ count }) => ({ count })
+      );
+    },
+
+    orderData() {
+      return {
+        products: this.productsInCart,
+        delivery_address: this.deliveryAddress,
+        order_amount: this.orderAmount,
+        user_id: this.getUser.id,
+        delivery_id: this.orderInfo.delivery,
+      }
+    },
+
   },
 
   mounted() {
@@ -125,27 +170,42 @@ export default {
   methods: {
     ...mapActions(['getDeliveriesAll']),
 
-    saveOrderData() {
-      this.orderFormRef.orderData.$touch();
-      if (this.orderFormRef.orderData.$invalid) {
+    submitOrder() {
+      this.orderFormRef.orderInfo.$touch();
+      if (this.orderFormRef.orderInfo.$invalid) {
         return;
       }
+
+      axiosBase
+        .post('api/orders/store', this.orderData)
+        .then(response => {
+          if (response.status === 200) {
+            this.dialogVisible = true;
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        });
     },
 
-    submitOrder() {
-
+    closeDialog() {
+      this.dialogVisible = false;
+      this.$router.push({
+        name: 'home'
+      });
     },
   },
 
   validations() {
     return {
-      orderData: {
-        name: { required, minLength: minLength(3) },
-        surname: { required, minLength: minLength(3) },
+      orderInfo: {
+        // name: { required, minLength: minLength(3) },
+        // surname: { required, minLength: minLength(3) },
         street: { required, minLength: minLength(3) },
-        home: { required, minLength: minLength(3) },
+        home: { required },
         postIndex: { required, numeric, minLength: minLength(5), maxLength: maxLength(5) },
         city: { required, minLength: minLength(3) },
+        delivery: { required },
       },
     }
   }
@@ -170,5 +230,9 @@ export default {
 
 .form-section {
   padding: 0 40px 40px;
+}
+
+.el-select {
+  width: 100%;
 }
 </style>

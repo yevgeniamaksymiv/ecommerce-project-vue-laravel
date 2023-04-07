@@ -51,7 +51,7 @@ const cartModule = {
       commit('setCart', data);
     },
 
-    removeProductFromCart({commit}, id) {
+    removeFromCart({commit}, id) {
       commit('removeProductFromCart', id);
     }
   },
