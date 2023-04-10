@@ -2,9 +2,10 @@
   <div class="common-layout">
     <el-container>
       <el-aside width="200px">
-        <el-menu>
-          <el-menu-item index="" ref="item" v-for="category in this.getCategoriesById(1)" :key="category.id"
-            :value="category.id" @click="filterByCategory(category.id)">
+        <el-menu :default-active="activeIndex">
+          <el-menu-item :index="category.id" v-for="(category) in this.getCategoriesById(1)" :key="category.id"
+            :value="category.id" @click="filterByCategory(category.id)"
+            :class="{ 'is-active': activeIndex === category.id }">
             {{ category.name }}
           </el-menu-item>
         </el-menu>
@@ -15,7 +16,7 @@
             <el-select v-model="sortValue" class="m-2" placeholder="СОРТУВАТИ ЗА" size="large">
               <el-option label="ЗРОСТАННЯ ЦІНИ" value="asc" />
               <el-option label="ЗНИЖЕННЯ ЦІНИ" value="desc" />
-              <el-option label="НАЙНОВІШЕ" value="date" />
+              <el-option label="НАЙНОВІШЕ" value="created_at" />
             </el-select>
           </el-col>
           <el-col :xs="24" :sm="12" :md="5" :lg="5">
@@ -81,14 +82,16 @@ export default {
         }
       },
       sortValue: null,
-      currentPage: 1
+      currentPage: 1,
+      activeIndex: null,
     }
   },
 
   mounted() {
-    this.getCategories();
+    this.getCategoriesAll();
     this.getAllProducts();
     this.getColorsSizes();
+    this.activeIndex = this.$route.query.activeIndex;
   },
 
   watch: {
@@ -107,6 +110,10 @@ export default {
       deep: true,
     },
 
+    activeIndex(val) {
+        this.filterByCategory(val);
+    },
+
     sortValue(val) {
       this.sortBySelectedValue(val);
     },
@@ -117,14 +124,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getCategories', 'getAllProducts', 'getColorsSizes', 'filterProducts']),
+    ...mapActions(['getCategoriesAll', 'getAllProducts', 'getColorsSizes', 'filterProducts']),
 
     sortBySelectedValue(sortValue) {
       let direction = 'asc';
       let field = null;
-      if (sortValue === 'date') {
+      if (sortValue === 'created_at') {
         direction = 'desc';
-        field = 'date';
+        field = 'created_at';
       } else {
         field = 'price';
         direction = sortValue;
@@ -136,7 +143,7 @@ export default {
     },
 
     filterByCategory(categoryId) {
-      this.filtersSortData.filters.category_id = categoryId;
+        this.filtersSortData.filters.category_id = categoryId;
     },
 
     handleCurrentPageChange() {
@@ -195,7 +202,11 @@ ul li a {
 }
 
 .el-menu-item.is-active {
-  color: #1e1f20;
+  height: 30px;
+  background-color: #ecf5ff;
+}
+
+.el-menu-item {
   height: 30px;
 }
 

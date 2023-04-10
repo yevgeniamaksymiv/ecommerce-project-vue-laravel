@@ -8,7 +8,7 @@ const categoryModule = {
   },
 
   getters: {
-    getCategories: (state) => state.categories,
+    getCategories: (state) => state.categories.filter((el) => el.parent_id !== null),
     
     getCategoriesById: (state) => (id) => {
       return state.categories.filter((el) => el.parent_id === id);
@@ -22,7 +22,7 @@ const categoryModule = {
   },
 
   actions: {
-    getCategories({ commit }) {
+    getCategoriesAll({ commit }) {
       axiosBase
         .get('api/categories')
         .then((response) => {

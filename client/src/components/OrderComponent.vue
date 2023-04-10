@@ -102,7 +102,7 @@
 
 <script>
 import axiosBase from '@/axios-config';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import useValidate from '@vuelidate/core';
 import { required, minLength, maxLength, numeric } from '@vuelidate/validators';
 import { mapValues, keyBy } from 'lodash';
@@ -169,6 +169,7 @@ export default {
 
   methods: {
     ...mapActions(['getDeliveriesAll']),
+    ...mapMutations(['clearCart']),
 
     submitOrder() {
       this.orderFormRef.orderInfo.$touch();
@@ -180,6 +181,7 @@ export default {
         .post('api/orders/store', this.orderData)
         .then(response => {
           if (response.status === 200) {
+            this.clearCart();
             this.dialogVisible = true;
           }
         })

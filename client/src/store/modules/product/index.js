@@ -35,14 +35,15 @@ const productModule = {
 
   actions: {
     getAllProducts({ commit }, page = 1) {
-      axiosBase.get(`api/products?page=${page}`)
-      .then(({ data }) => {
-        commit('setProducts', data.data);
-        commit('setTotal', data.meta.total);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      axiosBase
+        .get(`api/products?page=${page}`)
+        .then(({ data }) => {
+          commit('setProducts', data.data);
+          commit('setTotal', data.meta.total);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
     getProductById({ commit }, id) {
@@ -62,6 +63,20 @@ const productModule = {
         .then(({ data }) => {
           commit('setProducts', data.data);
           commit('setTotal', data.meta.total);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    searchProducts({ commit }, value) {
+      axiosBase
+        .post('api/products/search', {
+          'inputSearch': value
+        })
+        .then(({data}) => {
+          commit('setProducts', data.data);
+          commit('setTotal', data.data.length);
         })
         .catch((error) => {
           console.log(error);

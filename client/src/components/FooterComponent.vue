@@ -1,5 +1,7 @@
 <template>
-  <h2>Footer</h2>
+  <div class="container">
+    <span class="text-muted">&copy; Your Website 2023</span>
+  </div>
 </template>
 
 <script>
@@ -8,4 +10,16 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+  max-width: 960px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.text-muted {
+  color: #888;
+}
+</style>

@@ -1,10 +1,9 @@
 <template>
-  <el-row :gutter="40">
-    <el-col :span="6">
+  <el-row :gutter="40" class="header-row">
+    <el-col :span="5" class="header-items">
       <h1>Logo</h1>
     </el-col>
-
-    <el-col :span="12">
+    <el-col :span="12" class="header-items">
       <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false"
         @select="handleSelect">
         <el-menu-item index="1">
@@ -14,35 +13,42 @@
           <router-link to="/">Новинки</router-link>
         </el-menu-item>
         <el-menu-item index="3">
-          <router-link to="/clothes"><ClothesOverlayMenu /></router-link>
+          <router-link to="/clothes">
+            <ClothesOverlayMenu />
+          </router-link>
         </el-menu-item>
         <el-menu-item index="4">
           <router-link to="/">Аксесуари</router-link>
         </el-menu-item>
       </el-menu>
     </el-col>
-
-    <el-col :span="6">
-      <template v-if="this.getUser.name">
-        <CabinetPopover />
-      </template>
-      <template v-else>
-        <LoginPopover />
-      </template>
-      <el-button index="4" type="info" link class="ml-2" @click="goToCart">
-        <el-icon color="#909399" :size="20">
-          <ShoppingBag />
-        </el-icon>
-        Кошик {{ this.getCartQuantity ? `(${getCartQuantity})` : '' }}</el-button>
+    <el-col :span="7" class="buttons-right">
+      <el-row>
+        <el-input v-model="inputSearch" class="w-50 m-2 search" placeholder="Пошук товару" :prefix-icon="searchIcon" />
+      </el-row>
+      <el-row>
+        <template v-if="this.getUser.name">
+          <CabinetPopover />
+        </template>
+        <template v-else>
+          <LoginPopover />
+        </template>
+        <el-button index="4" type="info" link class="ml-2" @click="goToCart">
+          <el-icon color="#909399" :size="20">
+            <ShoppingBag />
+          </el-icon>
+          Кошик {{ this.getCartQuantity ? `(${getCartQuantity})` : '' }}</el-button>
+      </el-row>
     </el-col>
   </el-row>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import LoginPopover from '@/components/Popovers/LoginPopover.vue';
 import CabinetPopover from '@/components/Popovers/CabinetPopover.vue';
 import ClothesOverlayMenu from '@/components/Popovers/ClothesOverlayMenu.vue';
+import { Search } from '@element-plus/icons-vue';
 
 export default {
   name: "HeaderComponent",
@@ -52,7 +58,22 @@ export default {
     ClothesOverlayMenu
   },
 
+  data() {
+    return {
+      searchIcon: Search,
+      inputSearch: null,
+    }
+  },
+
+  watch: {
+    inputSearch(val) {
+      this.searchProducts(val);
+    }
+  },
+
   methods: {
+    ...mapActions(['searchProducts']),
+
     goToCart() {
       this.$router.push({
         name: 'cart',
@@ -81,4 +102,22 @@ ul li a {
   letter-spacing: .5px;
 }
 
+.el-row.header-row {
+  padding-top: 20px;
+}
+.el-col.buttons-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.el-input.search {
+  width: 200px;
+}
+
+.el-col.header-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

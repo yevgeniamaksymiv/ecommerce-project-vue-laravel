@@ -2,11 +2,10 @@
   <div ref="overlayMenu" class="overlay" @mouseleave="closeOverlayMenu">
     <div class="overlay-content">
       <el-row>
-        <el-col :span="4" v-for="category in this.getCategoriesById(1)"
-                :key="category.name">
+        <el-col :span="4" v-for="category in this.getCategoriesById(1)" :key="category.id">
           <el-menu>
-            <el-menu-item index=""> 
-            {{ category.name }} 
+            <el-menu-item index="" ref="item" :value="category.id" @click="filterByCategory(category.id)">
+              {{ category.name }}
             </el-menu-item>
           </el-menu>
         </el-col>
@@ -17,24 +16,25 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'ClothesOverlayMenu',
 
-  mounted() {
-    this.getCategories();
-  },
-
   methods: {
-    ...mapActions(['getCategories']),
-
     openOverlayMenu() {
       this.$refs.overlayMenu.style.height = "40%";
     },
     closeOverlayMenu() {
       this.$refs.overlayMenu.style.height = "0";
-    }
+    },
+
+    filterByCategory(id) {
+      this.$router.push({
+        name: 'clothes',
+        query: { activeIndex: id },
+      });
+    },
   },
 
   computed: {
@@ -45,8 +45,9 @@ export default {
 
 <style scoped>
 ul {
-  border-right: none!important;
+  border-right: none !important;
 }
+
 .overlay {
   height: 0;
   width: 100%;
@@ -58,7 +59,7 @@ ul {
   overflow-x: hidden;
   transition: 0.5s;
   opacity: .9;
-  box-shadow:  0 20px 20px -20px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 20px 20px -20px rgba(0, 0, 0, 0.8);
 }
 
 .overlay-content {
