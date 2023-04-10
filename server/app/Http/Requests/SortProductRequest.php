@@ -23,7 +23,7 @@ class SortProductRequest extends FormRequest
     {
         return [
             'price' => 'nullable|string',
-            'date' => 'nullable|string',
+            'created_at' => 'nullable|string',
         ];
     }
 
@@ -31,7 +31,7 @@ class SortProductRequest extends FormRequest
     {
         return [
             'price.*' => 'Field price must be a string',
-            'date.*' => 'Field date must be a string',
+            'created_at.*' => 'Field date must be a string',
         ];
     }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Filters\ProductFilter;
 use App\Http\Requests\FilterProductRequest;
-use App\Http\Requests\SortProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductsResource;
 use App\Models\Product;
@@ -51,43 +50,20 @@ class ProductController extends Controller
         return response()->json($data, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function search(Request $request)
     {
-        //
+        $searchValue = $request->get('inputSearch');
+        $products = Product::query()
+            ->where('name', 'LIKE', "%{$searchValue}%")
+            ->get();
+
+        return ProductsResource::collection($products);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Product $product)
     {
         return new ProductResource($product);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product)
-    {
-        //
-    }
 }

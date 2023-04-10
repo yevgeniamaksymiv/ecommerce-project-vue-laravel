@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Jobs\SendOrderEmailJob;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderCreatedEmail;
 
 class OrderController extends Controller
 {
@@ -36,6 +39,9 @@ class OrderController extends Controller
         $products = $request->get('products');
         $order = Order::create($data);
         $order->products()->sync($products);
+
+        dispatch(new SendOrderEmailJob($order->user->email));
+        Mail::to($order->user->email)->send(new OrderCreatedEmail($order));
 
         return response(200);
     }
