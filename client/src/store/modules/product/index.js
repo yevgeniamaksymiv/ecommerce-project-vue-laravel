@@ -1,4 +1,4 @@
-import axiosBase from '@/axios-config';
+import axiosBase from '@/services/axios-config';
 
 const productModule = {
   state() {

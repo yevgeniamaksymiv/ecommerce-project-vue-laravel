@@ -5,6 +5,7 @@ import categoryModule from './modules/category';
 import productModule from './modules/product';
 import cartModule from './modules/cart';
 import deliveryModule from './modules/delivery';
+import orderModule from './modules/order';
 
 const store = createStore({
   modules: {
@@ -13,6 +14,7 @@ const store = createStore({
     productModule,
     cartModule,
     deliveryModule,
+    orderModule,
   },
   plugins: [createPersistedState()],
 });

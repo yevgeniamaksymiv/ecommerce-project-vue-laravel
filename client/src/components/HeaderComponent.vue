@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="40" class="header-row">
-    <el-col :span="5" class="header-items">
+    <el-col :span="4" class="header-items">
       <h1>Logo</h1>
     </el-col>
     <el-col :span="12" class="header-items">
@@ -21,6 +21,17 @@
           <router-link to="/">Аксесуари</router-link>
         </el-menu-item>
       </el-menu>
+    </el-col>
+    <el-col :span="1" v-if="pdfUrl" style="padding-top: 25px;">
+      <el-link type="primary"
+        :href="`http://localhost:85/${pdfUrl}`" 
+        target="_blank"
+        >
+        PDF
+        <el-icon color="#409eff" :size="20">
+          <Download />
+        </el-icon>
+      </el-link>
     </el-col>
     <el-col :span="7" class="buttons-right">
       <el-row>
@@ -49,6 +60,8 @@ import LoginPopover from '@/components/Popovers/LoginPopover.vue';
 import CabinetPopover from '@/components/Popovers/CabinetPopover.vue';
 import ClothesOverlayMenu from '@/components/Popovers/ClothesOverlayMenu.vue';
 import { Search } from '@element-plus/icons-vue';
+import emitter from 'tiny-emitter/instance';
+import pusher from '@/services/pusher';
 
 export default {
   name: "HeaderComponent",
@@ -62,7 +75,28 @@ export default {
     return {
       searchIcon: Search,
       inputSearch: null,
+      pdfUrl: null,
+      channel: null,
     }
+  },
+
+  created() {
+    pusher.connection.bind('connected', () => {
+      this.channel = pusher.subscribe('order_pdf');
+      this.channel.bind('pdf-created', data => {
+        emitter.emit('pdf-url-updated', data.pdf_url);
+      });
+    });
+  },
+
+  beforeMount() {
+    emitter.on('pdf-url-updated', url => {
+      this.pdfUrl = url;
+    })
+  },
+
+  beforeUnmount() {
+    emitter.off('pdf-url-updated');
   },
 
   watch: {
@@ -82,7 +116,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getUser', 'getCartQuantity'])
+    ...mapGetters(['getUser', 'getCartQuantity', 'getPdfPath'])
   }
 }
 
@@ -105,6 +139,7 @@ ul li a {
 .el-row.header-row {
   padding-top: 20px;
 }
+
 .el-col.buttons-right {
   display: flex;
   flex-direction: column;

@@ -53,7 +53,7 @@ ul {
   width: 100%;
   position: fixed;
   z-index: 1;
-  top: 60px;
+  top: 100px;
   left: 0;
   background-color: #fff;
   overflow-x: hidden;

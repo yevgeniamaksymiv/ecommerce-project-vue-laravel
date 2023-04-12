@@ -15,17 +15,27 @@
 </template>
 
 <script>
-import HeaderComponent from '@/components/HeaderComponent.vue'
-import FooterComponent from '@/components/FooterComponent.vue'
-
+import HeaderComponent from '@/components/HeaderComponent.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'App',
   components: {
     HeaderComponent,
     FooterComponent
-  }
+  },
+
+  data() {
+    return {
+    }
+  },
+
+  methods: {
+    ...mapActions(['storePdfPath']),
+  },
 }
+
 </script>
 
 <style>

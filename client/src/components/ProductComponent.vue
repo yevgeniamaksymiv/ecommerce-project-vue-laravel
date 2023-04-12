@@ -102,6 +102,7 @@ export default {
 
   mounted() {
     this.getProductById(this.$route.params.id);
+    console.log('img', this.getProduct.img_path)
   },
 
   methods: {

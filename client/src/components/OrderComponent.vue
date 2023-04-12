@@ -92,16 +92,19 @@
   </el-row>
   <el-dialog v-model="dialogVisible" title="Замовлення успішно сформовано">
     <div>Очікуйте інформацію про доставку на свою електронну адресу</div>
+    <hr>
+    <div style="margin-top: 20px;">Бажаєте завантажити інформацію про замовлення у форматі PDF?</div>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="closeDialog">Cancel</el-button>
+        <el-button type="primary" @click="downLoadPdf">Завантажити PDF</el-button>
+        <el-button type="primary" plain @click="closeDialog">Закрити</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script>
-import axiosBase from '@/axios-config';
+import axiosBase from '@/services/axios-config.js';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import useValidate from '@vuelidate/core';
 import { required, minLength, maxLength, numeric } from '@vuelidate/validators';
@@ -127,7 +130,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getTotalPrice', 'getDeliveries', 'getUser', 'getCart']),
+    ...mapGetters(['getTotalPrice', 'getDeliveries', 'getUser', 'getCart', 'getIsOrderCreated', 'getOrder']),
 
     deliveryAddress() {
       return `${this.orderInfo.street} ${this.orderInfo.home} ${this.orderInfo.city} ${this.orderInfo.postIndex}`;
@@ -168,7 +171,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getDeliveriesAll']),
+    ...mapActions(['getDeliveriesAll', 'storeOrder']),
     ...mapMutations(['clearCart']),
 
     submitOrder() {
@@ -177,16 +180,24 @@ export default {
         return;
       }
 
+      this.storeOrder(this.orderData);
+      if (this.getIsOrderCreated) {
+        // this.clearCart();
+        this.dialogVisible = true;
+      }
+    },
+    
+    downLoadPdf() {
+      this.dialogVisible = false;
+      this.$router.push({
+        name: 'home'
+      });
       axiosBase
-        .post('api/orders/store', this.orderData)
-        .then(response => {
-          if (response.status === 200) {
-            this.clearCart();
-            this.dialogVisible = true;
-          }
+        .post('api/orders/create_pdf', {
+          order_id: this.getOrder.order_id
         })
-        .catch(error => {
-          console.log(error)
+        .catch((error) => {
+          console.log(error);
         });
     },
 
@@ -236,5 +247,9 @@ export default {
 
 .el-select {
   width: 100%;
+}
+
+div.dialog-footer {
+  display: flex;
 }
 </style>
