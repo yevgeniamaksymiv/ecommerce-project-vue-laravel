@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Mail\OrderCreatedEmail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class SendOrderEmailJob implements ShouldQueue
@@ -21,7 +22,7 @@ class SendOrderEmailJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct($order)
+    public function __construct(Order $order)
     {
         $this->order = $order;
     }
@@ -31,6 +32,7 @@ class SendOrderEmailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        new OrderCreatedEmail($this->order);
+//        Log::channel('test')->info('mail to '.$this->order->user->email);
+        Mail::to($this->order->user->email)->send(new OrderCreatedEmail($this->order));
     }
 }

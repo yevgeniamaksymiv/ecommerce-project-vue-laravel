@@ -40,4 +40,5 @@ Route::get('deliveries', [DeliveryController::class, 'index']);
 
 Route::get('orders', [OrderController::class, 'index']);
 Route::post('orders/store', [OrderController::class, 'store']);
+Route::post('orders/create_pdf', [OrderController::class, 'createOrderPdf']);
 
