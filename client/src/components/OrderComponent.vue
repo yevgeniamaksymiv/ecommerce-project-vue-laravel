@@ -109,6 +109,8 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import useValidate from '@vuelidate/core';
 import { required, minLength, maxLength, numeric } from '@vuelidate/validators';
 import { mapValues, keyBy } from 'lodash';
+import { h } from 'vue';
+import { ElNotification } from 'element-plus';
 
 
 export default {
@@ -182,7 +184,7 @@ export default {
 
       this.storeOrder(this.orderData);
       if (this.getIsOrderCreated) {
-        // this.clearCart();
+        this.clearCart();
         this.dialogVisible = true;
       }
     },
@@ -199,6 +201,13 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+
+      ElNotification({
+        title: 'PDF',
+        message: h('i', { style: 'color: teal' }, 'Очікуйте на звіт в форматі PDF'),
+        type: 'success',
+        offset: 100,
+      });
     },
 
     closeDialog() {

@@ -2,9 +2,9 @@
   <div ref="overlayMenu" class="overlay" @mouseleave="closeOverlayMenu">
     <div class="overlay-content">
       <el-row>
-        <el-col :span="4" v-for="category in this.getCategoriesById(1)" :key="category.id">
+        <el-col :span="4" v-for="category in categories" :key="category.id">
           <el-menu>
-            <el-menu-item index="" ref="item" :value="category.id" @click="filterByCategory(category.id)">
+            <el-menu-item index="" :value="category.id" @click="filterByCategory(category.id)">
               {{ category.name }}
             </el-menu-item>
           </el-menu>
@@ -12,14 +12,20 @@
       </el-row>
     </div>
   </div>
-  <span @mouseover="openOverlayMenu">Одяг</span>
+  <span @mouseover="openOverlayMenu">{{ title }}</span>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import emitter from 'tiny-emitter/instance';
 
 export default {
-  name: 'ClothesOverlayMenu',
+  name: 'ProductsOverlayMenu',
+
+  props: {
+    categoryId: null,
+    title: null,
+  },
 
   methods: {
     openOverlayMenu() {
@@ -30,15 +36,25 @@ export default {
     },
 
     filterByCategory(id) {
-      this.$router.push({
-        name: 'clothes',
-        query: { activeIndex: id },
-      });
+      emitter.emit('active-category-idx', id);
+      if (this.categoryId == 1) {
+        this.$router.push({
+          name: 'clothes',
+        });
+      } else {
+        this.$router.push({
+          name: 'accessories',
+        });
+      }
     },
   },
 
   computed: {
-    ...mapGetters(['getCategoriesById'])
+    ...mapGetters(['getCategoriesById']),
+
+    categories() {
+      return this.getCategoriesById(+this.categoryId);
+    },
   }
 }
 </script>

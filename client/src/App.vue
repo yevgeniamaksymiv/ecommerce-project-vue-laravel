@@ -18,6 +18,8 @@
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import { mapActions } from 'vuex';
+import emitter from 'tiny-emitter/instance';
+import pusher from '@/services/pusher';
 
 export default {
   name: 'App',
@@ -28,7 +30,17 @@ export default {
 
   data() {
     return {
+      channel: null,
     }
+  },
+
+  created() {
+    pusher.connection.bind('connected', () => {
+      this.channel = pusher.subscribe('order_pdf');
+      this.channel.bind('pdf-created', data => {
+        emitter.emit('pdf-url-updated', data.pdf_url);
+      });
+    });
   },
 
   methods: {
@@ -44,6 +56,7 @@ body {
   padding: 0;
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
 }
 
 #app {

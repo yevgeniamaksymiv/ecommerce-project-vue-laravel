@@ -10,23 +10,22 @@
           <router-link to="/">Головна</router-link>
         </el-menu-item>
         <el-menu-item index="2">
-          <router-link to="/">Новинки</router-link>
+          <router-link to="/latest">Новинки</router-link>
         </el-menu-item>
         <el-menu-item index="3">
           <router-link to="/clothes">
-            <ClothesOverlayMenu />
+            <ProductsOverlayMenu title="Одяг" categoryId="1" />
           </router-link>
         </el-menu-item>
         <el-menu-item index="4">
-          <router-link to="/">Аксесуари</router-link>
+          <router-link to="/accessories">
+            <ProductsOverlayMenu title="Аксесуари" categoryId="2" />
+          </router-link>
         </el-menu-item>
       </el-menu>
     </el-col>
     <el-col :span="1" v-if="pdfUrl" style="padding-top: 25px;">
-      <el-link type="primary"
-        :href="`http://localhost:85/${pdfUrl}`" 
-        target="_blank"
-        >
+      <el-link type="primary" :href="`http://localhost:85/${pdfUrl}`" target="_blank">
         PDF
         <el-icon color="#409eff" :size="20">
           <Download />
@@ -58,17 +57,16 @@
 import { mapGetters, mapActions } from 'vuex';
 import LoginPopover from '@/components/Popovers/LoginPopover.vue';
 import CabinetPopover from '@/components/Popovers/CabinetPopover.vue';
-import ClothesOverlayMenu from '@/components/Popovers/ClothesOverlayMenu.vue';
+import ProductsOverlayMenu from '@/components/Popovers/ProductsOverlayMenu.vue';
 import { Search } from '@element-plus/icons-vue';
 import emitter from 'tiny-emitter/instance';
-import pusher from '@/services/pusher';
 
 export default {
   name: "HeaderComponent",
   components: {
     LoginPopover,
     CabinetPopover,
-    ClothesOverlayMenu
+    ProductsOverlayMenu
   },
 
   data() {
@@ -78,15 +76,6 @@ export default {
       pdfUrl: null,
       channel: null,
     }
-  },
-
-  created() {
-    pusher.connection.bind('connected', () => {
-      this.channel = pusher.subscribe('order_pdf');
-      this.channel.bind('pdf-created', data => {
-        emitter.emit('pdf-url-updated', data.pdf_url);
-      });
-    });
   },
 
   beforeMount() {
@@ -102,7 +91,10 @@ export default {
   watch: {
     inputSearch(val) {
       this.searchProducts(val);
-    }
+      this.$router.push({
+        name: 'clothes',
+      });
+    },
   },
 
   methods: {

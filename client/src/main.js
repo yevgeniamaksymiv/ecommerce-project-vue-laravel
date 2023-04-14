@@ -8,8 +8,11 @@ import store from '@/store/index'
 
 const app = createApp(App);
 
+app.config.warnHandler = () => {}
+
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
-app.use(ElementPlus).use(store).use(router).mount('#app');
+
+app.use(ElementPlus, { silent: true }).use(store).use(router).mount('#app');
 

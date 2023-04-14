@@ -1,5 +1,5 @@
 <template>
-  <ProductsComponent categoryId="1" :activeIdx="activeIdx" />
+  <ProductsComponent categoryId="2" :activeIdx="activeIdx"/>
 </template>
 
 <script>
@@ -7,7 +7,7 @@ import ProductsComponent from './ProductsComponent.vue';
 import emitter from 'tiny-emitter/instance';
 
 export default {
-  name: 'ClothesComponent',
+  name: 'AccessoriesComponent',
 
   components: {
     ProductsComponent,
