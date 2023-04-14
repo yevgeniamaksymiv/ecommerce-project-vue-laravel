@@ -35,7 +35,7 @@ class CreateOrderPdfJob implements ShouldQueue
     public function handle(): void
     {
         $pdf = app()->make('dompdf.wrapper');
-        $pdf->loadView('email.test');
+        $pdf->loadView('email.test', ['order' => $this->order]);
         $pdfContent = $pdf->output();
         Storage::put("orders/order_pdf_{$this->order->id}.pdf", $pdfContent);
 

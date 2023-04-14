@@ -23,23 +23,6 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-//    public function getPdfPath(): Attribute
-//    {
-//        return Attribute::make(
-//            get: fn () => url("storage/orders/order_pdf_{$this->id}.pdf", [], true)
-//        );
-//    }
-
-//    public function getPdfPath(): Attribute
-//    {
-//        $url = url("storage/orders/order_pdf_{$this->id}.pdf");
-//        $parsedUrl = parse_url($url);
-//        $modifiedUrl = str_replace($parsedUrl['host'], $parsedUrl['host'] . ':85', $url);
-//        return Attribute::make([
-//            'pdf_url' => $modifiedUrl
-//        ]);
-//    }
-
     public function getPdfPath(): Attribute
     {
         return Attribute::make(

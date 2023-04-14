@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ProductSeeder extends Seeder
 {
@@ -21,23 +22,26 @@ class ProductSeeder extends Seeder
         $categoryIds = DB::table('categories')
             ->whereNotNull('parent_id')->pluck('id')->toArray();
 
-        $categoryNames = DB::table('categories')
-            ->whereNotNull('parent_id')->pluck('name')->toArray();
+        $img_path = [];
+        for ($i = 1; $i <= 16; $i++) {
+            $filename = "images/products/mens-wear-" . $i . ".jpg";
+            $img_path[] = $filename;
+        }
 
-        $img_path = ['images/products/1680183724_white-suit.jpg', 'images/products/1680183709_blue-shirt.png'];
-
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 500; $i++) {
+            $id = $categoryIds[array_rand($categoryIds)];
+            $name =  DB::table('categories')->where('id', $id)->value('name');
             DB::table('products')->insert([
-                'name' => $categoryNames[array_rand($categoryNames)] . ' ' . Str::random(length: 5),
+                'name' => $name . ' ' . Str::random(length: 5),
                 'description' => Str::random(length: 300),
                 'price' => random_int(500, 10000),
-                'quantity' => random_int(1, 20),
+                'quantity' => random_int(5, 20),
                 'size' =>  $sizes[array_rand($sizes)],
                 'color' => $colors[array_rand($colors)],
                 'img_path' => $img_path[array_rand($img_path)],
-                'category_id' => $categoryIds[array_rand($categoryIds)],
+                'category_id' => $id,
+                'created_at' => Carbon::now(),
             ]);
         }
-
     }
 }
