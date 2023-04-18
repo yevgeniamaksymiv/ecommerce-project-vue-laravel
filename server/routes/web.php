@@ -38,7 +38,9 @@ Route::prefix('admin')->middleware('adminUsers')->group( function () {
         'roles' => RoleController::class,
         'users' => UserController::class
     ]);
-    Route::post('orders/in_period', [OrderController::class, 'ordersInPeriod'])->name('orders.in_period');
+    Route::post('orders', [OrderController::class, 'ordersInPeriod'])->name('orders.in_period');
+    Route::get('export', [OrderController::class, 'export'])->name('orders.export');
+
 });
 
 

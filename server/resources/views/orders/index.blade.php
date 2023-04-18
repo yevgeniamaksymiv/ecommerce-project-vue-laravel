@@ -22,21 +22,24 @@
                 <small class="bg-light p-2">
                     from {{ $startDate }} to {{ $endDate }}, number of orders: {{ $ordersCount }}
                 </small>
-                <a class="btn btn-outline-primary ms-5 shadow-none" href="{{ route('orders.index') }}">
-                    Show all orders
-                </a>
             @endif
+            <a
+                class="btn btn-success ms-5 shadow-none d-inline-block float-end"
+                href="{{ route('orders.export') }}"
+            >
+                Export to Excel
+            </a>
         </div>
 
         <div class="container mt-4">
             <form method="POST" action="{{ route('orders.in_period') }}">
                 @csrf
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 d-flex justify-content-evenly align-items-center">
                     <label for="startDate">From</label>
                     <input
                         id="startDate"
                         name="startDate"
-                        class="form-control ms-2 me-5 shadow-none"
+                        class="form-control shadow-none"
                         type="date"
                         style="flex: 0 1 200px"
                     />
@@ -45,12 +48,15 @@
                     <input
                         id="endDate"
                         name="endDate"
-                        class="form-control ms-2 me-5 shadow-none"
+                        class="form-control shadow-none"
                         type="date"
                         style="flex: 0 1 200px"
                     />
 
                     <button id="button" type="submit" class="btn btn-primary shadow-none">Show orders</button>
+                    <a class="btn btn-outline-success shadow-none" href="{{ route('orders.index') }}">
+                        Clear filter
+                    </a>
                 </div>
             </form>
 

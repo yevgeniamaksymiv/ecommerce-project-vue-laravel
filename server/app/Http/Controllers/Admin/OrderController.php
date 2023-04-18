@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\OrdersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrdersInPeriodRequest;
 use App\Http\Requests\StoreOrderStatusRequest;
-use App\Models\Delivery;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -18,6 +19,11 @@ class OrderController extends Controller
     {
         $orders = Order::query()->get();
         return view('orders.index', compact('orders'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new OrdersExport, 'orders.xlsx');
     }
 
     public function ordersInPeriod(OrdersInPeriodRequest $request)
@@ -71,7 +77,6 @@ class OrderController extends Controller
     {
         $data = $request->only('status');
 
-//        $order->update(['status' => $data['status']]);
         $order->status = $data['status'];
         $order->save();
 
