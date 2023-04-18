@@ -18,27 +18,83 @@
 
         <div class="lead">
             All orders
+            @if(isset($startDate) && isset($endDate) && isset($ordersCount))
+                <small class="bg-light p-2">
+                    from {{ $startDate }} to {{ $endDate }}, number of orders: {{ $ordersCount }}
+                </small>
+                <a class="btn btn-outline-primary ms-5 shadow-none" href="{{ route('orders.index') }}">
+                    Show all orders
+                </a>
+            @endif
         </div>
 
         <div class="container mt-4">
+            <form method="POST" action="{{ route('orders.in_period') }}">
+                @csrf
+                <div class="input-group mb-3">
+                    <label for="startDate">From</label>
+                    <input
+                        id="startDate"
+                        name="startDate"
+                        class="form-control ms-2 me-5 shadow-none"
+                        type="date"
+                        style="flex: 0 1 200px"
+                    />
+
+                    <label for="endDate">To</label>
+                    <input
+                        id="endDate"
+                        name="endDate"
+                        class="form-control ms-2 me-5 shadow-none"
+                        type="date"
+                        style="flex: 0 1 200px"
+                    />
+
+                    <button id="button" type="submit" class="btn btn-primary shadow-none">Show orders</button>
+                </div>
+            </form>
 
             <table class="table table-striped">
                 <thead>
-                <th scope="col" width="20%">Date</th>
-                <th scope="col" width="20%">Address</th>
-                <th scope="col" width="20%">Amount (UAH)</th>
-                <th scope="col" width="20%">User name</th>
-                <th scope="col" width="20%">Delivery</th>
+                <th scope="col" width="15%">Order ID</th>
+                <th scope="col" width="15%">Date</th>
+                <th scope="col" width="15%">Amount (UAH)</th>
+                <th scope="col" width="15%">User name</th>
+                <th scope="col" width="15%">Delivery</th>
+                <th scope="col" width="15%">Status</th>
+                <th scope="col" width="1%">
+                <th scope="col" width="1%">
 
                 </thead>
 
                 @foreach($orders as $order)
                     <tr>
-                        <td>{{ $order->order_date }}</td>
-                        <td>{{ $order->delivery_address }}</td>
+                        <td>{{ $order->id }}</td>
+                        <td>{{ $order->created_at }}</td>
                         <td>{{ $order->order_amount }}</td>
                         <td>{{ $order->user?->fullName }}</td>
                         <td>{{ $order->delivery?->name }}</td>
+                        <td>{{ $order->status }}</td>
+                        <td>
+                            @can('update', $order)
+                                <a href="{{ route('orders.edit', $order->id) }}"
+                                   class="btn btn-default shadow-none">
+                                    <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
+                                </a>
+                            @endcan
+                        </td>
+                        <td>
+                            @can('delete', $order)
+                                <form method="POST" action="{{ route('orders.destroy', $order->id) }}">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-default shadow-none">
+                                        <img width="20" height="20" src="{{ asset('assets/delete.svg') }}"
+                                             alt="delete svg">
+                                    </button>
+                                </form>
+                            @endcan
+                        </td>
                     </tr>
                 @endforeach
 
@@ -47,4 +103,17 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script type="text/javascript">
+        const dateInputs = document.querySelectorAll('input');
+        const currentDate = new Date().toLocaleDateString();
+        const pattern = "\d{4}-(0[1-9]|1[0-2])-([012]\d|3[01])";
+
+        dateInputs.forEach(el => {
+            el.max = currentDate.split('.').reverse().join('-');
+            el.pattern = pattern;
+        });
+    </script>
+@endpush
 

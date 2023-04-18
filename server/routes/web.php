@@ -38,6 +38,7 @@ Route::prefix('admin')->middleware('adminUsers')->group( function () {
         'roles' => RoleController::class,
         'users' => UserController::class
     ]);
+    Route::post('orders/in_period', [OrderController::class, 'ordersInPeriod'])->name('orders.in_period');
 });
 
 

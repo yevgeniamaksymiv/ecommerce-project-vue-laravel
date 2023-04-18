@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategoryRequest extends FormRequest
+class OrdersInPeriodRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,17 +22,16 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:3|max:100',
-            'parent_id' => 'nullable|integer'
+            'startDate' => 'required|date|before_or_equal:' . Date('Y-m-d'),
+            'endDate' => 'required|date|after_or_equal:startDate|before_or_equal:' . Date('Y-m-d'),
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'Field name is required',
-            'name.min' => 'Minimum length of name is 3 characters ',
-            'name.max' => 'Maximum length of name is 100 characters ',
+            'startDate.*' => 'Enter correct date in first input field, it must be less or equal than today',
+            'endDate.*' => 'Enter correct date in second input field, it must be less than the first and less or equal than today',
         ];
     }
 }

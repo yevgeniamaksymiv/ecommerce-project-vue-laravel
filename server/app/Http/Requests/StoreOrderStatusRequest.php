@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreCategoryRequest extends FormRequest
+class StoreOrderStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,18 +22,15 @@ class StoreCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => 'required|string|min:3|max:100',
-            'parent_id' => 'nullable|integer'
-        ];
-    }
+        $statuses = ['pending', 'delivery', 'completed'];
 
-    public function messages(): array
-    {
         return [
-            'name.required' => 'Field name is required',
-            'name.min' => 'Minimum length of name is 3 characters ',
-            'name.max' => 'Maximum length of name is 100 characters ',
+            'status' => [
+                'sometimes',
+                'required',
+                'string',
+                Rule::in($statuses),
+            ],
         ];
     }
 }

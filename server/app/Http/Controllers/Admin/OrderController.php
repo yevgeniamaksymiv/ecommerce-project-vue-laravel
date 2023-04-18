@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrdersInPeriodRequest;
+use App\Http\Requests\StoreOrderStatusRequest;
 use App\Models\Delivery;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -18,6 +20,17 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
+    public function ordersInPeriod(OrdersInPeriodRequest $request)
+    {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate') . ' 23:59:59';
+
+        $orders = Order::whereBetween('created_at', [$startDate, $endDate])->get();
+        $ordersCount = $orders->count();
+
+        return view('orders.index',  compact('orders', 'startDate', 'endDate', 'ordersCount'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -31,7 +44,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -47,15 +60,24 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        $statuses = ['pending', 'delivery', 'completed'];
+        return view('orders.edit', compact('order', 'statuses'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(StoreOrderStatusRequest $request, Order $order)
     {
-        //
+        $data = $request->only('status');
+
+//        $order->update(['status' => $data['status']]);
+        $order->status = $data['status'];
+        $order->save();
+
+        session(['message' => 'Order updated successfully']);
+
+        return redirect()->route('orders.index');
     }
 
     /**
@@ -63,6 +85,11 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->products()->detach();
+        $order->delete();
+
+        session(['message' => 'Order deleted successfully']);
+
+        return redirect()->route('orders.index');
     }
 }
