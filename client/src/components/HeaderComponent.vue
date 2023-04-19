@@ -60,6 +60,7 @@ import CabinetPopover from '@/components/Popovers/CabinetPopover.vue';
 import ProductsOverlayMenu from '@/components/Popovers/ProductsOverlayMenu.vue';
 import { Search } from '@element-plus/icons-vue';
 import emitter from 'tiny-emitter/instance';
+import debounce from 'lodash.debounce';
 
 export default {
   name: "HeaderComponent",
@@ -89,12 +90,13 @@ export default {
   },
 
   watch: {
-    inputSearch(val) {
+    inputSearch: debounce(function (val) {
       this.searchProducts(val);
+
       this.$router.push({
         name: 'clothes',
       });
-    },
+    }, 500),
   },
 
   methods: {
