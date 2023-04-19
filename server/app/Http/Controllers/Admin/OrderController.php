@@ -71,7 +71,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $products = $order->products()->get();
+         return view('orders.show', compact('order', 'products'));
     }
 
     /**
@@ -103,7 +104,6 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        $order->products()->detach();
         $order->delete();
 
         session(['message' => 'Order deleted successfully']);

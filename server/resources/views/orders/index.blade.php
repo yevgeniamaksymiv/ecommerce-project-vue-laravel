@@ -98,6 +98,7 @@
                 <th scope="col" width="15%">Status</th>
                 <th scope="col" width="1%">
                 <th scope="col" width="1%">
+                <th scope="col" width="1%">
 
                 </thead>
 
@@ -109,6 +110,14 @@
                         <td>{{ $order->user?->fullName }}</td>
                         <td>{{ $order->delivery?->name }}</td>
                         <td>{{ $order->status }}</td>
+                        <td>
+                            @can('view', $order)
+                                <a href="{{ route('orders.show', $order->id) }}"
+                                   class="btn btn-default shadow-none">
+                                    <img width="20" height="20" src="{{ asset('assets/info.svg') }}" alt="info svg">
+                                </a>
+                            @endcan
+                        </td>
                         <td>
                             @can('update', $order)
                                 <a href="{{ route('orders.edit', $order->id) }}"
