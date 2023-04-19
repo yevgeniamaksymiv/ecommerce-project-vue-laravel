@@ -28,7 +28,7 @@ class StoreProductRequest extends FormRequest
             'quantity' => 'nullable|integer|digits_between:1,10',
             'size' => 'sometimes|required|integer|digits_between:1,10',
             'color' => 'nullable|string|min:3|max:50',
-            'img_path' => 'sometimes|image',
+            'img_path' => 'sometimes|image|max:1024',
             'category_id' => 'nullable|integer|exists:App\Models\Category,id',
         ];
     }

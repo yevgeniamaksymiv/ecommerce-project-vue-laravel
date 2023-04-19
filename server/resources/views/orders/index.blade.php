@@ -1,7 +1,7 @@
 @extends('layouts.sidebar')
 
 @section('content')
-    <div class="bg-white p-4 rounded">
+    <div class="bg-white p-4">
         @if(session('message'))
             <div class="alert alert-success">{{ session('message') }}</div>
         @endif
@@ -22,13 +22,41 @@
                 <small class="bg-light p-2">
                     from {{ $startDate }} to {{ $endDate }}, number of orders: {{ $ordersCount }}
                 </small>
+
+                <a
+                    class="btn btn-success ms-3 shadow-none d-inline-block float-end"
+                    href="{{ route('orders.export', ['startDate' => $startDate, 'endDate' => $endDate]) }}"
+                >
+                    Excel
+                    <img width="20" height="20" src="{{ asset('assets/download.svg') }}"
+                         alt="download svg">
+                </a>
+                <a
+                    class="btn btn-success ms-2 shadow-none d-inline-block float-end"
+                    href="{{ route('orders.generate_pdf', ['startDate' => $startDate, 'endDate' => $endDate]) }}"
+                >
+                    PDF
+                    <img width="20" height="20" src="{{ asset('assets/download.svg') }}"
+                         alt="download svg">
+                </a>
+            @else
+                <a
+                    class="btn btn-success ms-3 shadow-none d-inline-block float-end"
+                    href="{{ route('orders.export') }}"
+                >
+                    Excel
+                    <img width="20" height="20" src="{{ asset('assets/download.svg') }}"
+                         alt="download svg">
+                </a>
+                <a
+                    class="btn btn-success ms-2 shadow-none d-inline-block float-end"
+                    href="{{ route('orders.generate_pdf') }}"
+                >
+                    PDF
+                    <img width="20" height="20" src="{{ asset('assets/download.svg') }}"
+                         alt="download svg">
+                </a>
             @endif
-            <a
-                class="btn btn-success ms-5 shadow-none d-inline-block float-end"
-                href="{{ route('orders.export') }}"
-            >
-                Export to Excel
-            </a>
         </div>
 
         <div class="container mt-4">

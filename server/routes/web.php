@@ -40,7 +40,8 @@ Route::prefix('admin')->middleware('adminUsers')->group( function () {
     ]);
     Route::post('orders', [OrderController::class, 'ordersInPeriod'])->name('orders.in_period');
     Route::get('export', [OrderController::class, 'export'])->name('orders.export');
-
+    Route::get('generate_pdf', [OrderController::class, 'generatePdf'])->name('orders.generate_pdf');
+//    Route::post('restore', [OrderController::class, 'restore'])->name('orders.restore');
 });
 
 

@@ -28,7 +28,7 @@ class UpdateProductRequest extends FormRequest
             'quantity' => 'nullable|integer|digits_between:1,10',
             'size' => 'sometimes|required|integer|digits_between:1,10',
             'color' => 'nullable|string|min:3|max:50',
-            'img_path' => 'nullable|image',
+            'img_path' => 'nullable|image|max:1024',
             'category_id' => 'nullable|integer|exists:App\Models\Category,id',
         ];
     }

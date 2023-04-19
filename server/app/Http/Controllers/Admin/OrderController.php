@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OrdersInPeriodRequest;
 use App\Http\Requests\StoreOrderStatusRequest;
 use App\Models\Order;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -21,8 +22,17 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
-    public function export()
+    public function export(Request $request)
     {
+        if ($request->has('startDate') && $request->has('endDate')) {
+            $startDate = $request->input('startDate');
+            $endDate = $request->input('endDate') . ' 23:59:59';
+
+            $orders = Order::whereBetween('created_at', [$startDate, $endDate])->get();
+
+            return Excel::download(new OrdersExport($orders), 'orders.xlsx');
+        }
+
         return Excel::download(new OrdersExport, 'orders.xlsx');
     }
 
@@ -37,20 +47,23 @@ class OrderController extends Controller
         return view('orders.index',  compact('orders', 'startDate', 'endDate', 'ordersCount'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function generatePdf(Request $request)
     {
-        //
-    }
+        if ($request->has('startDate') && $request->has('endDate')) {
+            $startDate = $request->input('startDate');
+            $endDate = $request->input('endDate') . ' 23:59:59';
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
+            $orders = Order::whereBetween('created_at', [$startDate, $endDate])->get();
 
+            $pdf = PDF::loadView('orders.pdf', compact('orders','startDate', 'endDate'));
+
+            return $pdf->download('orders.pdf');
+        }
+            $orders = Order::query()->get();
+
+            $pdf = PDF::loadView('orders.pdf', compact('orders'));
+
+            return $pdf->download('orders.pdf');
     }
 
     /**
@@ -97,4 +110,17 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index');
     }
+
+    public function restore(Order $order)
+    {
+        $order->restore();
+        foreach ($order->products as $product) {
+            $order->products()->attach($product->id);
+        }
+
+        session(['message' => 'Order restored successfully']);
+
+        return redirect()->route('orders.index');
+    }
+
 }

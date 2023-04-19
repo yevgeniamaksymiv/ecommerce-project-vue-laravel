@@ -93,9 +93,13 @@
                 <label for="img_path" class="form-label">Image</label>
                 <div class="mb-3 input-group">
                     <input type="file"
+                           id="image"
                            class="form-control shadow-none @error('img_path') is-invalid @enderror"
                            name="img_path"
                            placeholder="Image" required>
+                </div>
+                <div id="error-file" class="alert alert-danger d-none">
+                    Invalid file size, it must be less than 1 MB
                 </div>
 
                 @error('img_path')
@@ -104,7 +108,8 @@
 
                 <div class="mb-3">
                     <label for="category_id" class="form-label">Select category</label>
-                    <select class="form-select shadow-none @error('category_id') is-invalid @enderror" name="category_id"
+                    <select class="form-select shadow-none @error('category_id') is-invalid @enderror"
+                            name="category_id"
                             id="inputGroupSelect01">
                         <option selected>Select category</option>
                         @foreach($categories as $category)
@@ -125,3 +130,23 @@
 
     </div>
 @endsection
+
+@push('scripts')
+    <script type="text/javascript">
+        const imgInput = document.getElementById('image');
+        const errorMessage = document.getElementById('error-file');
+        const maxSize = 1024 * 1024;
+
+        imgInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file.size > maxSize) {
+                imgInput.classList.add('is-invalid');
+                imgInput.value = '';
+                errorMessage.classList.remove('d-none');
+            } else {
+                imgInput.classList.remove('is-invalid');
+                errorMessage.classList.add('d-none');
+            }
+        }
+    </script>
+@endpush

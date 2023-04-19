@@ -4,8 +4,12 @@
 
     <div class="bg-white p-4 rounded">
         <div class="container text-center">
-            <div class="card" style="width: 25rem;">
-                <img width="398" height="265" src="{{ $product->getImagePath }}" class="card-img-top" alt="mens clothes">
+            <div class="card" style="width: 300px; height: auto;">
+                <img
+                    src="{{ $product->getImagePath }}"
+                    class="card-img-top"
+                    style="width: 100%;"
+                    alt="mens clothes">
                 <div class="card-body">
                     <h5 class="card-title">{{ $product->name }}</h5>
                     <p class="card-text">{{ $product->description }}</p>
