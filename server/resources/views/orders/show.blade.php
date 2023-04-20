@@ -4,6 +4,9 @@
     <div class="bg-white p-4 rounded">
         <div class="lead">
             Order {{ $order->id }}
+            <small class="bg-light p-2">
+                created: {{ $order->created_at }}
+            </small>
             <div class="d-inline-block ms-5">
                 <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary shadow-none">Back</a>
             </div>

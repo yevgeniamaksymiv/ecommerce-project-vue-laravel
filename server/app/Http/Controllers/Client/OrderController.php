@@ -31,6 +31,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('products');
+        $data['status'] = 'new';
         $products = $request->get('products');
         $order = Order::create($data);
         $order->products()->sync($products);

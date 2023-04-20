@@ -90,13 +90,12 @@
 
             <table class="table table-striped">
                 <thead>
-                <th scope="col" width="15%">Order ID</th>
+                <th scope="col" width="10%">Order ID</th>
                 <th scope="col" width="15%">Date</th>
                 <th scope="col" width="15%">Amount (UAH)</th>
                 <th scope="col" width="15%">User name</th>
                 <th scope="col" width="15%">Delivery</th>
-                <th scope="col" width="15%">Status</th>
-                <th scope="col" width="1%">
+                <th scope="col" width="25%">Status</th>
                 <th scope="col" width="1%">
                 <th scope="col" width="1%">
 
@@ -109,7 +108,15 @@
                         <td>{{ $order->order_amount }}</td>
                         <td>{{ $order->user?->fullName }}</td>
                         <td>{{ $order->delivery?->name }}</td>
-                        <td>{{ $order->status }}</td>
+                        <td>
+                            @can('update', $order)
+                                <a href="{{ route('orders.edit', $order->id) }}"
+                                   class="btn btn-default shadow-none">
+                                    <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
+                                </a>
+                            @endcan
+                                {{ $order->status }}
+                        </td>
                         <td>
                             @can('view', $order)
                                 <a href="{{ route('orders.show', $order->id) }}"
@@ -118,14 +125,14 @@
                                 </a>
                             @endcan
                         </td>
-                        <td>
-                            @can('update', $order)
-                                <a href="{{ route('orders.edit', $order->id) }}"
-                                   class="btn btn-default shadow-none">
-                                    <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">
-                                </a>
-                            @endcan
-                        </td>
+{{--                        <td>--}}
+{{--                            @can('update', $order)--}}
+{{--                                <a href="{{ route('orders.edit', $order->id) }}"--}}
+{{--                                   class="btn btn-default shadow-none">--}}
+{{--                                    <img width="20" height="20" src="{{ asset('assets/edit.svg') }}" alt="edit svg">--}}
+{{--                                </a>--}}
+{{--                            @endcan--}}
+{{--                        </td>--}}
                         <td>
                             @can('delete', $order)
                                 <form method="POST" action="{{ route('orders.destroy', $order->id) }}">

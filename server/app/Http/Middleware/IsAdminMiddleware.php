@@ -16,9 +16,10 @@ class IsAdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && in_array(auth()->user()->role_id, [Role::IS_ADMIN, Role::IS_MANAGER])) {
+        if (auth()->check() && auth()->user()->role->permissions->count() > 0) {
             return $next($request);
         }
+
         abort(403);
     }
 }

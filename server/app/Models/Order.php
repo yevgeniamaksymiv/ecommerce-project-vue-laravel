@@ -41,5 +41,6 @@ class Order extends Model
         'order_amount',
         'user_id',
         'delivery_id',
+        'status',
     ];
 }

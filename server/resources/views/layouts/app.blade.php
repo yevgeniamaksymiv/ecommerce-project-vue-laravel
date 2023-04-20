@@ -51,10 +51,7 @@
                             </li>
                         @endif
                     @else
-                        @if (
-                        Auth::user() &&
-                        in_array(Auth::user()->role_id, [App\Models\Role::IS_ADMIN, App\Models\Role::IS_MANAGER])
-                        )
+                        @if(Auth::user() && Auth::user()->role->permissions->count() > 0)
                             @yield('btn-dashboard')
                         @endif
                         <li class="nav-item dropdown">
